@@ -24,13 +24,13 @@ y_train = y_train.astype('int32')					# fix due to tensorflow complaining
 y_test = y_test.astype('int32') 					# fix due to tensorflow complaining
 
 #import pdb; pdb.set_trace() # debug mode
-def cutData(f, cut):
+# This cut the outer pixels off of the mnist dataset for the challenge
+def cutData(f, cut): 
 	l,w,h = f.shape
 	s,e = cut,w-cut #assumes square
 	fo = f[:,s:e,s:e]
 	print (fo.shape)
 	return fo
-
 
 
 def genTrainAndVal(f,l): #split the features and labels of the training data 80:20 train and validation
