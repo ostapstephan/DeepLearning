@@ -90,4 +90,4 @@ model.save_weights('model.h5')
   
 #testing
 scores = model.evaluate(x_test, y_test, batch_size=128, verbose=1)
-print('\nTest result: %.3f loss: %.3f' % (scores[1]*100,scores[0])
+print('\nTest result: %.3f loss: %.3f' % (scores[1]*100,scores[0]))

@@ -15,7 +15,7 @@ from keras import regularizers
 #from keras import backend as K
 
 num_classes=10
-BATCH_SIZE = 512
+BATCH_SIZE = 256
 epochs = 24 #we achieve overfitting after like 15-20 epochs
 DROP_RATE =.4
 
@@ -28,7 +28,7 @@ def genTrainAndVal(f,l): #split the features and labels of the training data 80:
 	fs = f[s]			# features shuffled
 	ls = l[s]			# labels shuffled 
 	lx = f.shape[0] 	# len of the features
-	nv = int( lx *.1) 	# num validation samp 
+	nv = int( lx *.2) 	# num validation samp 
 	print (fs[nv:].shape, ls[nv:].shape, fs[:nv].shape, ls[:nv].shape)
 	return fs[nv:], ls[nv:], fs[:nv], ls[:nv]
 
@@ -36,14 +36,14 @@ def genTrainAndVal(f,l): #split the features and labels of the training data 80:
 # load cifar 10
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 
-mean = np.mean(x_train, axis=(0,1,2,3))
-std = np.std(x_train, axis=(0,1,2,3))
-x_train = (x_train-mean)/(std+1e-7)
-x_test = (x_test-mean)/(std+1e-7)
+# load cifar 100
+#from keras.datasets import cifar100
+#(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode='fine')
 
-#convert to float and normalize
+#fonvert to float and normalize
 x_train,x_test = x_train.astype('float32'),x_test.astype('float32')
 x_train,x_test = x_train/255,x_test/255
+
 x_t,y_t,x_v,y_v =genTrainAndVal(x_train,y_train)
 
 #print Shapes
@@ -59,21 +59,34 @@ y_v = keras.utils.to_categorical(y_v,num_classes)
 y_test  = keras.utils.to_categorical(y_test, num_classes)
 
 model = Sequential()
+model.add(Conv2D(128,kernel_size=(2,2),
+	strides= 2,
+	padding='valid',
+	activation='relu',
+	data_format='channels_last',
+	kernel_initializer='glorot_uniform',
+	input_shape=x_t[0].shape))
+model.add(MaxPooling2D(pool_size=(2,2),
+	strides=2))
 
 
+model.add(Conv2D(256,kernel_size=(4,4),
+	strides= 4,
+	padding='valid',
+	activation='relu',
+	data_format='channels_last',
+	kernel_initializer='glorot_uniform',
+	input_shape=x_t[0].shape))
+model.add(MaxPooling2D(pool_size=(2,2),
+	strides=2))
 
+model.add(Dropout(DROP_RATE))
+model.add(Flatten())
+model.add(Dense(2048,activation='relu'))
+model.add(Dropout(DROP_RATE))
+model.add(Dense(num_classes,activation="softmax"))
 
-
-
-
-
-
-
-
-
-
-
-model.compile(loss=keras.losses.categorical_crossentropy ,
+model.compile(loss=keras.losses.categorical_crossentropy,
 	optimizer=keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False),
 	metrics=['accuracy'])
 
@@ -88,46 +101,3 @@ print("Test loss:",score[0])
 print("Test accuracy:",score[1])
 
 
-
-
-
-'''
-model.add(Conv2D(64,kernel_size=(5,5),
-	strides= 1,
-	padding='valid',
-	activation='relu',
-	data_format='channels_last',
-	input_shape=x_t[0].shape))
-
-model.add(MaxPooling2D(pool_size=(2,2),
-	strides=2))
-
-model.add(Conv2D(256,kernel_size=(1,1),
-	strides= 1,
-	activation='relu',
-	padding='valid',
-	data_format='channels_last',
-	kernel_initializer='glorot_uniform',
-	input_shape=x_t[0].shape)
-	)
-
-model.add(Conv2D(1024,kernel_size=(2,2),
-	strides= 2,
-	padding='valid',
-	activation='relu',
-	data_format='channels_last',
-	kernel_initializer='glorot_uniform',
-	input_shape=x_t[0].shape))
-
-model.add(Conv2D(2048,kernel_size=(1,1),
-	strides= 1,
-	activation='relu',
-	data_format='channels_last',
-	kernel_initializer='glorot_uniform',
-	input_shape=x_t[0].shape))
-
-model.add(Flatten())
-model.add(Dense(256,activation='relu'))
-model.add(Dropout(DROP_RATE))
-model.add(Dense(num_classes,activation="softmax"))
-'''
