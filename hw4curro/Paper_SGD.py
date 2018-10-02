@@ -24,7 +24,7 @@ from keras.layers import Conv2D, Activation, MaxPooling2D, GlobalAveragePooling2
 from sklearn.model_selection import train_test_split
 from keras import backend as K
 
-EPOCHS = 10
+EPOCHS = 128
 BATCH_SIZE = 32
 sgd = keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 optimizer = sgd
