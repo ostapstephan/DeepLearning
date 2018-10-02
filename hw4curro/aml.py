@@ -84,10 +84,11 @@ model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size),\
                     verbose=1,validation_data=(x_test,y_test),callbacks=[LearningRateScheduler(lr_schedule)])
 #save to disk
 model_json = model.to_json()
-with open('model.json', 'w') as json_file:
-    json_file.write(model_json)
+with open('model.json', 'w') as json_file:json_file.write(model_json)
 model.save_weights('model.h5')
 
 #testing
 scores = model.evaluate(x_test, y_test, batch_size=128, verbose=1)
-print('\nTest result: %.3f loss: %.3f' % (scores[1]*100,scores[0])
+print('\nTest result: %.3f loss: %.3f' % (scores[1]*100,scores[0]))
+
+
