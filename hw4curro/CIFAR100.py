@@ -12,12 +12,13 @@ from keras.models import Sequential
 from keras.datasets import cifar10
 from keras.layers import Dense, Dropout, Flatten,Conv2D, MaxPooling2D, Activation, BatchNormalization
 from keras import regularizers
+from keras.metrics import top_k_categorical_accuracy
 #from keras import backend as K
 
 num_classes=100
-BATCH_SIZE = 128
-epochs = 128 #we achieve overfitting after like 15-20 epochs
-DROP_RATE =.3
+BATCH_SIZE = 32
+epochs = 32 #we achieve overfitting after like 15-20 epochs
+DROP_RATE =.5
 weight_decay = 1e-4
 
 def genTrainAndVal(f,l): #split the features and labels of the training data 80:20 train and validation
@@ -57,22 +58,17 @@ y_v = keras.utils.to_categorical(y_v,num_classes)
 y_test  = keras.utils.to_categorical(y_test, num_classes)
 
 model = Sequential()
+
 model.add(Conv2D(32,(4,4),padding='same',kernel_regularizer=regularizers.l2(weight_decay), data_format='channels_last', kernel_initializer='glorot_uniform', input_shape=x_t[0].shape))
 model.add(Activation("elu"))
 model.add(BatchNormalization())
-model.add(Conv2D(32,(2,2),strides=1,padding='same', kernel_regularizer=regularizers.l2(weight_decay), kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
 model.add(Conv2D(32,(3,3),strides=1,padding='same', kernel_regularizer=regularizers.l2(weight_decay), kernel_initializer='glorot_uniform'))
 model.add(Activation("elu"))
-model.add(BatchNormalization())
 
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(DROP_RATE))
 
 model.add(Conv2D(64,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(Conv2D(64,kernel_size=(5,5),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
 model.add(Activation("elu"))
 model.add(BatchNormalization())
 model.add(Conv2D(64,kernel_size=(4,4),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
@@ -82,10 +78,10 @@ model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2,2), strides=2))
 model.add(Dropout(DROP_RATE))
 
-model.add(Conv2D(128,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Conv2D(128,kernel_size=(5,5),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
 model.add(Activation("elu"))
 model.add(BatchNormalization())
-model.add(Conv2D(128,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Conv2D(128,kernel_size=(2,2),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
 model.add(Activation("elu"))
 model.add(BatchNormalization())
 
@@ -97,9 +93,11 @@ model.add(Dense(num_classes,activation="softmax"))
 
 model.summary()
 
+
+
 model.compile(loss=keras.losses.categorical_crossentropy,
 	optimizer=keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False),
-	metrics=['accuracy'])
+	metrics=["top_k_categorical_accuracy"])
 
 model.fit(x_t, y_t,
 	batch_size=BATCH_SIZE,
