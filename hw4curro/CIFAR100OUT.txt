@@ -1,0 +1,149 @@
+(venv) ostap@ostap-All-Series:~/Documents/DeepLearning/hw4curro$ python CIFAR100.py 
+Using TensorFlow backend.
+(40000, 32, 32, 3) (40000, 1) (10000, 32, 32, 3) (10000, 1)
+Training features shape:  (40000, 32, 32, 3)
+Validation features shape:  (10000, 32, 32, 3)
+Test features shape:  (10000, 32, 32, 3)
+2018-10-03 18:52:53.455261: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-10-03 18:52:53.548204: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-10-03 18:52:53.548624: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 0 with properties: 
+name: GeForce GTX 980 major: 5 minor: 2 memoryClockRate(GHz): 1.2785
+pciBusID: 0000:01:00.0
+totalMemory: 3.94GiB freeMemory: 3.04GiB
+2018-10-03 18:52:53.614475: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-10-03 18:52:53.614870: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 1 with properties: 
+name: GeForce GTX 970 major: 5 minor: 2 memoryClockRate(GHz): 1.329
+pciBusID: 0000:02:00.0
+totalMemory: 3.94GiB freeMemory: 3.87GiB
+2018-10-03 18:52:53.615025: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1490] Adding visible gpu devices: 0, 1
+2018-10-03 18:52:53.967614: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-10-03 18:52:53.967645: I tensorflow/core/common_runtime/gpu/gpu_device.cc:977]      0 1 
+2018-10-03 18:52:53.967650: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 0:   N Y 
+2018-10-03 18:52:53.967653: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 1:   Y N 
+2018-10-03 18:52:53.967872: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2751 MB memory) -> physical GPU (device: 0, name: GeForce GTX 980, pci bus id: 0000:01:00.0, compute capability: 5.2)
+2018-10-03 18:52:53.989668: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 3599 MB memory) -> physical GPU (device: 1, name: GeForce GTX 970, pci bus id: 0000:02:00.0, compute capability: 5.2)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1 (Conv2D)            (None, 32, 32, 32)        1568      
+_________________________________________________________________
+activation_1 (Activation)    (None, 32, 32, 32)        0         
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 32, 32, 32)        128       
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 32, 32, 32)        9248      
+_________________________________________________________________
+activation_2 (Activation)    (None, 32, 32, 32)        0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 16, 16, 32)        0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 16, 16, 32)        0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 16, 16, 64)        18496     
+_________________________________________________________________
+activation_3 (Activation)    (None, 16, 16, 64)        0         
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 16, 16, 64)        65600     
+_________________________________________________________________
+activation_4 (Activation)    (None, 16, 16, 64)        0         
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 8, 8, 64)          0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 8, 8, 64)          0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 8, 8, 128)         204928    
+_________________________________________________________________
+activation_5 (Activation)    (None, 8, 8, 128)         0         
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 8, 8, 128)         512       
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 8, 8, 128)         65664     
+_________________________________________________________________
+activation_6 (Activation)    (None, 8, 8, 128)         0         
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 8, 8, 128)         512       
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 4, 4, 128)         0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 4, 4, 128)         0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 2048)              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 100)               204900    
+=================================================================
+Total params: 572,068
+Trainable params: 571,236
+Non-trainable params: 832
+_________________________________________________________________
+Train on 40000 samples, validate on 10000 samples
+Epoch 1/32
+40000/40000 [==============================] - 16s 409us/step - loss: 4.1911 - top_k_categorical_accuracy: 0.3479 - val_loss: 3.3574 - val_top_k_categorical_accuracy: 0.4923
+Epoch 2/32
+40000/40000 [==============================] - 15s 376us/step - loss: 3.1132 - top_k_categorical_accuracy: 0.5538 - val_loss: 2.8131 - val_top_k_categorical_accuracy: 0.6225
+Epoch 3/32
+40000/40000 [==============================] - 15s 375us/step - loss: 2.6354 - top_k_categorical_accuracy: 0.6573 - val_loss: 2.5696 - val_top_k_categorical_accuracy: 0.6761
+Epoch 4/32
+40000/40000 [==============================] - 15s 376us/step - loss: 2.3939 - top_k_categorical_accuracy: 0.7151 - val_loss: 2.3879 - val_top_k_categorical_accuracy: 0.7168
+Epoch 5/32
+40000/40000 [==============================] - 15s 375us/step - loss: 2.2350 - top_k_categorical_accuracy: 0.7537 - val_loss: 2.3999 - val_top_k_categorical_accuracy: 0.7222
+Epoch 6/32
+40000/40000 [==============================] - 15s 376us/step - loss: 2.1149 - top_k_categorical_accuracy: 0.7805 - val_loss: 2.2855 - val_top_k_categorical_accuracy: 0.7483
+Epoch 7/32
+40000/40000 [==============================] - 15s 376us/step - loss: 2.0224 - top_k_categorical_accuracy: 0.8023 - val_loss: 2.3183 - val_top_k_categorical_accuracy: 0.7565
+Epoch 8/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.9339 - top_k_categorical_accuracy: 0.8208 - val_loss: 2.2308 - val_top_k_categorical_accuracy: 0.7750
+Epoch 9/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.8632 - top_k_categorical_accuracy: 0.8364 - val_loss: 2.3028 - val_top_k_categorical_accuracy: 0.7636
+Epoch 10/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.8067 - top_k_categorical_accuracy: 0.8467 - val_loss: 2.2427 - val_top_k_categorical_accuracy: 0.7786
+Epoch 11/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.7510 - top_k_categorical_accuracy: 0.8609 - val_loss: 2.1793 - val_top_k_categorical_accuracy: 0.7912
+Epoch 12/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.7062 - top_k_categorical_accuracy: 0.8696 - val_loss: 2.2404 - val_top_k_categorical_accuracy: 0.7853
+Epoch 13/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.6602 - top_k_categorical_accuracy: 0.8784 - val_loss: 2.1732 - val_top_k_categorical_accuracy: 0.8046
+Epoch 14/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.6301 - top_k_categorical_accuracy: 0.8872 - val_loss: 2.2326 - val_top_k_categorical_accuracy: 0.7956
+Epoch 15/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.5979 - top_k_categorical_accuracy: 0.8934 - val_loss: 2.3233 - val_top_k_categorical_accuracy: 0.7844
+Epoch 16/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.5764 - top_k_categorical_accuracy: 0.8984 - val_loss: 2.2007 - val_top_k_categorical_accuracy: 0.8040
+Epoch 17/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.5455 - top_k_categorical_accuracy: 0.9033 - val_loss: 2.3343 - val_top_k_categorical_accuracy: 0.7897
+Epoch 18/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.5250 - top_k_categorical_accuracy: 0.9079 - val_loss: 2.2597 - val_top_k_categorical_accuracy: 0.8064
+Epoch 19/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.4950 - top_k_categorical_accuracy: 0.9141 - val_loss: 2.2843 - val_top_k_categorical_accuracy: 0.8049
+Epoch 20/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.4831 - top_k_categorical_accuracy: 0.9169 - val_loss: 2.3495 - val_top_k_categorical_accuracy: 0.7995
+Epoch 21/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.4702 - top_k_categorical_accuracy: 0.9209 - val_loss: 2.3060 - val_top_k_categorical_accuracy: 0.8093
+Epoch 22/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.4421 - top_k_categorical_accuracy: 0.9256 - val_loss: 2.3839 - val_top_k_categorical_accuracy: 0.7979
+Epoch 23/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.4391 - top_k_categorical_accuracy: 0.9255 - val_loss: 2.3491 - val_top_k_categorical_accuracy: 0.8038
+Epoch 24/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.4216 - top_k_categorical_accuracy: 0.9286 - val_loss: 2.3787 - val_top_k_categorical_accuracy: 0.7953
+Epoch 25/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.4010 - top_k_categorical_accuracy: 0.9313 - val_loss: 2.3989 - val_top_k_categorical_accuracy: 0.7959
+Epoch 26/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.3877 - top_k_categorical_accuracy: 0.9346 - val_loss: 2.3856 - val_top_k_categorical_accuracy: 0.8006
+Epoch 27/32
+40000/40000 [==============================] - 15s 377us/step - loss: 1.3773 - top_k_categorical_accuracy: 0.9373 - val_loss: 2.3777 - val_top_k_categorical_accuracy: 0.8066
+Epoch 28/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.3772 - top_k_categorical_accuracy: 0.9367 - val_loss: 2.4399 - val_top_k_categorical_accuracy: 0.8018
+Epoch 29/32
+40000/40000 [==============================] - 15s 377us/step - loss: 1.3589 - top_k_categorical_accuracy: 0.9395 - val_loss: 2.4524 - val_top_k_categorical_accuracy: 0.7953
+Epoch 30/32
+40000/40000 [==============================] - 15s 375us/step - loss: 1.3470 - top_k_categorical_accuracy: 0.9427 - val_loss: 2.4399 - val_top_k_categorical_accuracy: 0.8001
+Epoch 31/32
+40000/40000 [==============================] - 15s 377us/step - loss: 1.3399 - top_k_categorical_accuracy: 0.9427 - val_loss: 2.4711 - val_top_k_categorical_accuracy: 0.7989
+Epoch 32/32
+40000/40000 [==============================] - 15s 376us/step - loss: 1.3318 - top_k_categorical_accuracy: 0.9438 - val_loss: 2.5110 - val_top_k_categorical_accuracy: 0.7980
+10000/10000 [==============================] - 1s 117us/step
+Test loss: 2.4556733959197996
+Test accuracy: 0.796
