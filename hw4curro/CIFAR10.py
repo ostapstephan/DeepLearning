@@ -14,10 +14,10 @@ from keras.layers import Dense, Dropout, Flatten,Conv2D, MaxPooling2D, Activatio
 from keras import regularizers
 #from keras import backend as K
 
-num_classes=100
-BATCH_SIZE = 128
-epochs = 128 #we achieve overfitting after like 15-20 epochs
-DROP_RATE =.3
+num_classes=10
+BATCH_SIZE = 256
+epochs = 64 #we: achieve overfitting after like 15-20 epochs
+DROP_RATE =.2
 weight_decay = 1e-4
 
 def genTrainAndVal(f,l): #split the features and labels of the training data 80:20 train and validation
@@ -34,11 +34,11 @@ def genTrainAndVal(f,l): #split the features and labels of the training data 80:
 
 
 # load cifar 10
-#(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
 
 # load cifar 100
-from keras.datasets import cifar100
-(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode='fine')
+#from keras.datasets import cifar100
+#(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode='fine')
 
 #fonvert to float and normalize
 x_train,x_test = x_train.astype('float32'),x_test.astype('float32')
@@ -90,7 +90,7 @@ model.add(Activation("elu"))
 model.add(BatchNormalization())
 
 model.add(MaxPooling2D(pool_size=(2,2), strides=2))
-model.add(Dropout(.2))
+model.add(Dropout(.5))
 
 model.add(Flatten())
 model.add(Dense(num_classes,activation="softmax"))

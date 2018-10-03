@@ -66,7 +66,7 @@ def lr_schedule(epoch): #pulled from https://github.com/keras-team/keras/blob/ma
 #from keras.datasets import cifar100
 #(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode='fine')
 
-#convert to float and normalize
+#fonvert to float and normalize
 x_train,x_test = x_train.astype('float32'),x_test.astype('float32')
 x_train,x_test = x_train/255,x_test/255
 
@@ -119,6 +119,45 @@ def res_layer(inputs, num_filters=16, kernel_size=3,
 		x = conv(x)
 	return x
 
+
+'''
+model = Sequential()
+model.add(Conv2D(32,(4,4),padding='same',kernel_regularizer=regularizers.l2(weight_decay), data_format='channels_last', kernel_initializer='glorot_uniform', input_shape=x_t[0].shape))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+model.add(Conv2D(32,(2,2),strides=1,padding='same', kernel_regularizer=regularizers.l2(weight_decay), kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(Conv2D(32,(3,3),strides=1,padding='same', kernel_regularizer=regularizers.l2(weight_decay), kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Dropout(DROP_RATE))
+
+model.add(Conv2D(64,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+model.add(Conv2D(64,kernel_size=(5,5),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+model.add(Conv2D(64,kernel_size=(4,4),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+
+model.add(MaxPooling2D(pool_size=(2,2), strides=2))
+model.add(Dropout(DROP_RATE))
+
+model.add(Conv2D(128,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+model.add(Conv2D(128,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
+model.add(Activation("elu"))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2,2), strides=2))
+model.add(Dropout(.2))
+model.add(Flatten())
+model.add(Dense(num_classes,activation="softmax"))
+model.summary()
+'''
 
 model.compile(loss="categorical_crossentropy",
 	optimizer=keras.optimizers.Adam(lr=lr_schedule(0)),
@@ -196,45 +235,3 @@ model.fit(datagen.flow(x_t, y_t, batch_size=BATCH_SIZE),
 score = model.evaluate(x_test,y_test,verbose=1)
 print("Test loss:",score[0])
 print("Test accuracy:",score[1])
-
-
-
-''' Old Model
-model = Sequential()
-model.add(Conv2D(32,(4,4),padding='same',kernel_regularizer=regularizers.l2(weight_decay), data_format='channels_last', kernel_initializer='glorot_uniform', input_shape=x_t[0].shape))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(Conv2D(32,(2,2),strides=1,padding='same', kernel_regularizer=regularizers.l2(weight_decay), kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(Conv2D(32,(3,3),strides=1,padding='same', kernel_regularizer=regularizers.l2(weight_decay), kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(DROP_RATE))
-
-model.add(Conv2D(64,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(Conv2D(64,kernel_size=(5,5),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(Conv2D(64,kernel_size=(4,4),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-
-model.add(MaxPooling2D(pool_size=(2,2), strides=2))
-model.add(Dropout(DROP_RATE))
-
-model.add(Conv2D(128,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(Conv2D(128,kernel_size=(3,3),padding='same',kernel_regularizer=regularizers.l2(weight_decay),data_format='channels_last',kernel_initializer='glorot_uniform'))
-model.add(Activation("elu"))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2,2), strides=2))
-model.add(Dropout(.2))
-model.add(Flatten())
-model.add(Dense(num_classes,activation="softmax"))
-model.summary()
-'''
-
