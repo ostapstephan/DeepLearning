@@ -1,0 +1,1965 @@
+%!PS-Adobe-3.0
+%%Title: CIFAR10ResOUT.txt
+%%For: ostap
+%%Creator: a2ps version 4.14
+%%CreationDate: Thu Oct  4 01:10:14 2018
+%%BoundingBox: 24 24 588 768
+%%DocumentData: Clean7Bit
+%%Orientation: Landscape
+%%Pages: 8
+%%PageOrder: Ascend
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-BoldOblique
+%%+ font Courier-Oblique
+%%+ font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Symbol
+%%+ font Times-Bold
+%%+ font Times-Roman
+%%DocumentProcessColors: Black 
+%%DocumentSuppliedResources: procset a2ps-a2ps-hdr
+%%+ procset a2ps-black+white-Prolog
+%%+ encoding ISO-8859-1Encoding
+%%EndComments
+/a2psdict 200 dict def
+a2psdict begin
+%%BeginProlog
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+
+% EPSF import as in the Red Book
+/BeginInclude {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack 
+  userdict begin
+    0 setgray 0 setlinecap
+    1 setlinewidth 0 setlinejoin
+    10 setmiterlimit [ ] 0 setdash newpath
+    gs_languagelevel 1 ne {
+      false setstrokeadjust false setoverprint 
+    } if
+} bind def
+
+/EndInclude {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+/BeginEPSF {
+  BeginInclude
+  /showpage { } def
+} bind def
+
+/EndEPSF {
+  EndInclude
+} bind def
+
+% Page prefeed
+/page_prefeed {         % bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} bind def
+
+/deffont {
+  findfont exch scalefont def
+} bind def
+
+/reencode_font {
+  findfont reencode 2 copy definefont pop def
+} bind def
+
+% Function c-show (str => -)
+% centers text only according to x axis.
+/c-show { 
+  dup stringwidth pop
+  2 div neg 0 rmoveto
+  show
+} bind def
+
+% Function l-show (str => -)
+% prints texts so that it ends at currentpoint
+/l-show {
+  dup stringwidth pop neg 
+  0 
+  rmoveto show
+} bind def
+
+% center-fit show (str w => -)
+% show centered, and scale currentfont so that the width is less than w
+/cfshow {
+  exch dup stringwidth pop
+  % If the title is too big, try to make it smaller
+  3 2 roll 2 copy
+  gt
+  { % if, i.e. too big
+    exch div
+    currentfont exch scalefont setfont
+  } { % ifelse
+    pop pop 
+  }
+  ifelse
+  c-show			% center title
+} bind def
+
+% Return the y size of the current font
+% - => fontsize
+/currentfontsize {
+  currentfont /FontType get 0 eq {
+    currentfont /FontMatrix get 3 get
+  }{
+    currentfont /FontMatrix get 3 get 1000 mul
+  } ifelse
+} bind def
+
+% reencode the font
+% <encoding-vector> <fontdict> -> <newfontdict>
+/reencode { %def
+  dup length 5 add dict begin
+    { %forall
+      % <vector> <key> <val>
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+    /Encoding exch def % -
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    % We use `load' because sometimes BBox is executable, sometimes not.
+    % Since we need 4 numbers an not an array avoid BBox from being executed
+    /FontBBox load aload pop
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Get the underline position and thickness if they're defined.
+    % Use 1 if they are not defined.
+    currentdict /FontInfo 2 copy known
+    { get
+      /UnderlinePosition 2 copy % <FontInfo> /UP <FontInfo> /UP
+      2 copy known
+      { get }{ pop pop 1 } ifelse
+      0 exch FontMatrix transform exch pop
+      def % <FontInfo>
+
+      /UnderlineThickness 2 copy % <FontInfo> /UT <FontInfo> /UT
+      2 copy known
+      { get }{ pop pop 1 } ifelse
+      0 exch FontMatrix transform exch pop
+      def % <FontInfo>
+      pop % -
+    }{ pop pop
+    } ifelse
+
+    currentdict
+  end 
+} bind def
+
+% composite fonts for ASCII-EUC mixed strings
+% Version 1.2 1/31/1990
+% Original Ken'ichi HANDA (handa@etl.go.jp)
+% Modified Norio Katayama (katayama@rd.nacsis.ac.jp),1998
+% Extend & Fix Koji Nakamaru (maru@on.cs.keio.ac.jp), 1999
+% Anyone can freely copy, modify, distribute this program.
+
+/copyfont {	% font-dic extra-entry-count  copyfont  font-dic
+	1 index maxlength add dict begin
+	{	1 index /FID ne 2 index /UniqueID ne and
+		{def} {pop pop} ifelse
+	} forall
+	currentdict
+	end
+} bind def
+
+/compositefont { % ASCIIFontName EUCFontName RomanScale RomanOffset Rot(T/F) compositefont font
+    /RomanRotation exch def
+    /RomanOffset exch def
+    /RomanScale exch def
+    userdict /fixeucfont_dict known not {
+	userdict begin
+	    /fixeucfont_dict 2 dict begin
+		/UpperByteEncoding [
+		    16#00 1 16#20 { pop 0 } for
+		    16#21 1 16#28 { 16#20 sub } for
+		    16#29 1 16#2F { pop 0 } for
+		    16#30 1 16#74 { 16#27 sub } for
+		    16#75 1 16#FF { pop 0 } for
+		] def
+	        /LowerByteEncoding [
+		    16#00 1 16#A0 { pop /.notdef } for
+		    16#A1 1 16#FE { 16#80 sub 16 2 string cvrs
+				    (cXX) dup 1 4 -1 roll
+				    putinterval cvn } for
+		    /.notdef
+		] def
+		currentdict
+	    end def
+	end
+    } if
+    findfont dup /FontType get 0 eq {
+	14 dict begin
+	    %
+	    % 7+8 bit EUC font
+	    %
+	    12 dict begin
+		/EUCFont exch def
+		/FontInfo (7+8 bit EUC font) readonly def
+		/PaintType 0 def
+		/FontType 0 def
+		/FontMatrix matrix def
+		% /FontName
+		/Encoding fixeucfont_dict /UpperByteEncoding get def
+		/FMapType 2 def
+		EUCFont /WMode known
+		{ EUCFont /WMode get /WMode exch def }
+		{ /WMode 0 def } ifelse
+		/FDepVector [
+		    EUCFont /FDepVector get 0 get
+		    [ 16#21 1 16#28 {} for 16#30 1 16#74 {} for ]
+		    {
+			13 dict begin
+			    /EUCFont EUCFont def
+			    /UpperByte exch 16#80 add def	
+			    % /FontName
+			    /FontInfo (EUC lower byte font) readonly def
+			    /PaintType 0 def
+			    /FontType 3 def
+			    /FontMatrix matrix def
+			    /FontBBox {0 0 0 0} def
+			    /Encoding
+				fixeucfont_dict /LowerByteEncoding get def
+			    % /UniqueID
+			    % /WMode
+			    /BuildChar {
+				gsave
+				exch dup /EUCFont get setfont
+				/UpperByte get
+				2 string
+				dup 0 4 -1 roll put
+				dup 1 4 -1 roll put
+				dup stringwidth setcharwidth
+				0 0 moveto show
+				grestore
+			    } bind def
+			    currentdict
+			end
+			/lowerbytefont exch definefont
+		    } forall
+		] def
+		currentdict
+	    end
+	    /eucfont exch definefont
+	    exch
+	    findfont 1 copyfont dup begin
+		RomanRotation {
+			/FontMatrix FontMatrix
+			[ 0 RomanScale neg RomanScale 0 RomanOffset neg 0 ]
+			matrix concatmatrix def
+		}{
+			/FontMatrix FontMatrix
+			[ RomanScale 0 0 RomanScale 0 RomanOffset ] matrix concatmatrix
+			def
+			/CDevProc
+			    {pop pop pop pop 0 exch -1000 exch 2 div 880} def
+		} ifelse
+	    end
+	    /asciifont exch definefont
+	    exch
+	    /FDepVector [ 4 2 roll ] def
+	    /FontType 0 def
+	    /WMode 0 def
+	    /FMapType 4 def
+	    /FontMatrix matrix def
+	    /Encoding [0 1] def
+	    /FontBBox {0 0 0 0} def
+%	    /FontHeight 1.0 def % XXXX
+	    /FontHeight RomanScale 1.0 ge { RomanScale }{ 1.0 } ifelse def
+	    /Descent -0.3 def   % XXXX
+	    currentdict
+	end
+	/tmpfont exch definefont
+	pop
+	/tmpfont findfont
+    }{
+	pop findfont 0 copyfont
+    } ifelse
+} def	
+
+/slantfont {	% FontName slant-degree  slantfont  font'
+    exch findfont 1 copyfont begin
+    [ 1 0 4 -1 roll 1 0 0 ] FontMatrix exch matrix concatmatrix
+    /FontMatrix exch def
+    currentdict
+    end
+} def
+
+% Function print line number (<string> # -)
+/# {
+  gsave
+    sx cw mul neg 2 div 0 rmoveto
+    f# setfont
+    c-show
+  grestore
+} bind def
+
+% -------- Some routines to enlight plain b/w printings ---------
+
+% Underline
+% width --
+/dounderline {
+  currentpoint
+  gsave
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    0 rlineto
+    stroke
+  grestore
+} bind def
+
+% Underline a string
+% string --
+/dounderlinestring {
+  stringwidth pop
+  dounderline
+} bind def
+
+/UL {
+  /ul exch store
+} bind def
+
+% Draw a box of WIDTH wrt current font
+% width --
+/dobox {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    stroke
+  grestore
+} bind def
+
+/BX {
+  /bx exch store
+} bind def
+
+% Box a string
+% string --
+/doboxstring {
+  stringwidth pop
+  dobox
+} bind def
+
+%
+% ------------- Color routines ---------------
+%
+/FG /setrgbcolor load def
+
+% Draw the background
+% width --
+/dobackground {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    bgcolor aload pop setrgbcolor
+    fill
+  grestore
+} bind def
+
+% Draw bg for a string
+% string --
+/dobackgroundstring {
+  stringwidth pop
+  dobackground
+} bind def
+
+
+/BG {
+  dup /bg exch store
+  { mark 4 1 roll ] /bgcolor exch store } if
+} bind def
+
+
+/Show {
+  bg { dup dobackgroundstring } if
+  ul { dup dounderlinestring } if
+  bx { dup doboxstring } if
+  show
+} bind def
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T {
+  cw mul x0 add
+  bg { dup currentpoint pop sub dobackground } if
+  ul { dup currentpoint pop sub dounderline } if
+  bx { dup currentpoint pop sub dobox } if
+  y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n {
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+/S {
+  Show
+} bind def
+
+%%BeginResource: procset a2ps-a2ps-hdr 2.0 2
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Function title: prints page header.
+% <ct> <rt> <lt> are passed as argument
+/title { 
+  % 1. Draw the background
+  x v get y v get moveto
+  gsave
+    0 th 2 div neg rmoveto 
+    th setlinewidth
+    0.95 setgray
+    pw 0 rlineto stroke
+  grestore
+  % 2. Border it
+  gsave
+    0.7 setlinewidth
+    pw 0 rlineto
+    0 th neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+  % stk: ct rt lt
+  x v get y v get th sub 1 add moveto
+%%IncludeResource: font Helvetica
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  % 3. The left title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    fnfs 0.8 mul hm rmoveto
+    show			% left title
+  grestore
+  exch
+  % stk: ct ltw rt
+  % 4. the right title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    dup
+    pw exch stringwidth pop fnfs 0.8 mul add sub
+    hm
+    rmoveto
+    show			% right title
+  grestore
+  % stk: ct ltw rtw
+  % 5. the center title
+  gsave
+    pw 3 1 roll
+    % stk: ct pw ltw rtw
+    3 copy 
+    % Move to the center of the left room
+    sub add 2 div hm rmoveto
+    % What is the available space in here?
+    add sub fnfs 0.8 mul sub fnfs 0.8 mul sub
+    % stk: ct space_left
+%%IncludeResource: font Helvetica-Bold
+  fHelvetica-Bold fnfs scalefont setfont
+    cfshow
+  grestore
+} bind def
+
+% Function border: prints virtual page border
+/border { %def
+  gsave				% print four sides
+    0 setgray
+    x v get y v get moveto
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function water: prints a water mark in background
+/water { %def
+  gsave
+    scx scy moveto rotate
+%%IncludeResource: font Times-Bold
+  fTimes-Bold 100 scalefont setfont
+    .97 setgray
+    dup stringwidth pop 2 div neg -50 rmoveto
+    show
+  grestore
+} bind def
+
+% Function rhead: prints the right header
+/rhead {  %def
+  lx ly moveto
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  l-show
+} bind def
+
+% Function footer (cf rf lf -> -)
+/footer {
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  dx dy moveto
+  show
+
+  snx sny moveto
+  l-show
+  
+  fnx fny moveto
+  c-show
+} bind def
+%%EndResource
+%%BeginResource: procset a2ps-black+white-Prolog 2.0 1
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T { 
+  cw mul x0 add y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n { %def
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+}  bind def
+
+/S {
+  Show
+} bind def
+
+/p {
+  false UL
+  false BX
+  fCourier bfs scalefont setfont
+  Show
+} bind def
+
+/sy {
+  false UL
+  false BX
+  fSymbol bfs scalefont setfont
+  Show
+} bind def
+
+/k {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/K {
+  false UL
+  false BX
+  fCourier-Bold bfs scalefont setfont
+  Show
+} bind def
+
+/c {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/C {
+  false UL
+  false BX
+  fCourier-BoldOblique bfs scalefont setfont
+  Show 
+} bind def
+
+/l {
+  false UL
+  false BX
+  fHelvetica bfs scalefont setfont
+  Show
+} bind def
+
+/L {
+  false UL
+  false BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show 
+} bind def
+
+/str{
+  false UL
+  false BX
+  fTimes-Roman bfs scalefont setfont
+  Show
+} bind def
+
+/e{
+  false UL
+  true BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show
+} bind def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier
+%%IncludeResource: font Courier-Oblique
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Symbol
+%%IncludeResource: font Courier-BoldOblique
+%%BeginResource: encoding ISO-8859-1Encoding
+/ISO-8859-1Encoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright 
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash 
+/zero /one /two /three /four /five /six /seven 
+/eight /nine /colon /semicolon /less /equal /greater /question 
+/at /A /B /C /D /E /F /G 
+/H /I /J /K /L /M /N /O 
+/P /Q /R /S /T /U /V /W 
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore 
+/quoteleft /a /b /c /d /e /f /g 
+/h /i /j /k /l /m /n /o 
+/p /q /r /s /t /u /v /w 
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section 
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron 
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /bullet 
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown 
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla 
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis 
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply 
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls 
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla 
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis 
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide 
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis 
+] def
+%%EndResource
+% Initialize page description variables.
+/sh 612 def
+/sw 792 def
+/llx 24 def
+/urx 768 def
+/ury 588 def
+/lly 24 def
+/#copies 1 def
+/th 15.000000 def
+/fnfs 11 def
+/bfs 7.493857 def
+/cw 4.496314 def
+
+% Dictionary for ISO-8859-1 support
+/iso1dict 8 dict begin
+  /fCourier ISO-8859-1Encoding /Courier reencode_font
+  /fCourier-Bold ISO-8859-1Encoding /Courier-Bold reencode_font
+  /fCourier-BoldOblique ISO-8859-1Encoding /Courier-BoldOblique reencode_font
+  /fCourier-Oblique ISO-8859-1Encoding /Courier-Oblique reencode_font
+  /fHelvetica ISO-8859-1Encoding /Helvetica reencode_font
+  /fHelvetica-Bold ISO-8859-1Encoding /Helvetica-Bold reencode_font
+  /fTimes-Bold ISO-8859-1Encoding /Times-Bold reencode_font
+  /fTimes-Roman ISO-8859-1Encoding /Times-Roman reencode_font
+currentdict end def
+/bgcolor [ 0 0 0 ] def
+/bg false def
+/ul false def
+/bx false def
+% The font for line numbering
+/f# /Helvetica findfont bfs .6 mul scalefont def
+/fSymbol /Symbol findfont def
+/hm fnfs 0.25 mul def
+/pw
+   cw 81.400000 mul
+def
+/ph
+   522.321860 th add
+def
+/pmw urx llx sub pw 2 mul sub 1 div def
+/pmh 0 def
+/v 0 def
+/x [
+  0
+  dup pmw add pw add
+] def
+/y [
+  pmh ph add 0 mul ph add
+  dup
+] def
+/scx sw 2 div def
+/scy sh 2 div def
+/snx urx def
+/sny lly 2 add def
+/dx llx def
+/dy sny def
+/fnx scx def
+/fny dy def
+/lx snx def
+/ly ury fnfs 0.8 mul sub def
+/sx 0 def
+/tab 8 def
+/x0 0 def
+/y0 0 def
+%%EndSetup
+
+%%Page: (1-2) 1
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(\(venv\) ostap@ostap-All-Series:~/Documents/DeepLearning/hw4curro$ python CIFAR10R) p n
+(es.py ) N
+(Using TensorFlow backend.) N
+(\(32, 32, 3\)) N
+(\(40000, 32, 32, 3\) \(40000, 1\) \(10000, 32, 32, 3\) \(10000, 1\)) N
+(Training features shape:  \(40000, 32, 32, 3\)) N
+(Validation features shape:  \(10000, 32, 32, 3\)) N
+(Test features shape:  \(10000, 32, 32, 3\)) N
+(hi \(32, 32, 3\)) N
+(\(?, 32, 32, 3\)) N
+(2018-10-04 00:18:06.742793: I tensorflow/core/platform/cpu_feature_guard.cc:141]) N
+( Your CPU supports instructions that this TensorFlow binary was not compiled to ) N
+(use: AVX2 FMA) N
+(2018-10-04 00:18:06.819645: I tensorflow/stream_executor/cuda/cuda_gpu_executor.) N
+(cc:964] successful NUMA node read from SysFS had negative value \(-1\), but there ) N
+(must be at least one NUMA node, so returning NUMA node zero) N
+(2018-10-04 00:18:06.820032: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1) N
+(411] Found device 0 with properties: ) N
+(name: GeForce GTX 980 major: 5 minor: 2 memoryClockRate\(GHz\): 1.2785) N
+(pciBusID: 0000:01:00.0) N
+(totalMemory: 3.94GiB freeMemory: 3.05GiB) N
+(2018-10-04 00:18:06.870278: I tensorflow/stream_executor/cuda/cuda_gpu_executor.) N
+(cc:964] successful NUMA node read from SysFS had negative value \(-1\), but there ) N
+(must be at least one NUMA node, so returning NUMA node zero) N
+(2018-10-04 00:18:06.870668: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1) N
+(411] Found device 1 with properties: ) N
+(name: GeForce GTX 970 major: 5 minor: 2 memoryClockRate\(GHz\): 1.329) N
+(pciBusID: 0000:02:00.0) N
+(totalMemory: 3.94GiB freeMemory: 3.87GiB) N
+(2018-10-04 00:18:06.870818: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1) N
+(490] Adding visible gpu devices: 0, 1) N
+(2018-10-04 00:18:07.225328: I tensorflow/core/common_runtime/gpu/gpu_device.cc:9) N
+(71] Device interconnect StreamExecutor with strength 1 edge matrix:) N
+(2018-10-04 00:18:07.225360: I tensorflow/core/common_runtime/gpu/gpu_device.cc:9) N
+(77]      0 1 ) N
+(2018-10-04 00:18:07.225365: I tensorflow/core/common_runtime/gpu/gpu_device.cc:9) N
+(90] 0:   N Y ) N
+(2018-10-04 00:18:07.225368: I tensorflow/core/common_runtime/gpu/gpu_device.cc:9) N
+(90] 1:   Y N ) N
+(2018-10-04 00:18:07.225597: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1) N
+(103] Created TensorFlow device \(/job:localhost/replica:0/task:0/device:GPU:0 wit) N
+(h 2758 MB memory\) -> physical GPU \(device: 0, name: GeForce GTX 980, pci bus id:) N
+( 0000:01:00.0, compute capability: 5.2\)) N
+(2018-10-04 00:18:07.247495: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1) N
+(103] Created TensorFlow device \(/job:localhost/replica:0/task:0/device:GPU:1 wit) N
+(h 3599 MB memory\) -> physical GPU \(device: 1, name: GeForce GTX 970, pci bus id:) N
+( 0000:02:00.0, compute capability: 5.2\)) N
+(________________________________________________________________________________) N
+(__________________) N
+(Layer \(type\)                    Output Shape         Param #     Connected to   ) N
+(                  ) N
+(================================================================================) N
+(==================) N
+(input_1 \(InputLayer\)            \(None, 32, 32, 3\)    0                          ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_2 \(Conv2D\)               \(None, 32, 32, 16\)   448         input_1[0][0]  ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_1 \(BatchNor \(None, 32, 32, 16\)   64          conv2d_2[0][0] ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_1 \(Activation\)       \(None, 32, 32, 16\)   0           batch_normaliza) N
+(tion_1[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(CIFAR10ResOUT.txt) (Page 1/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(conv2d_3 \(Conv2D\)               \(None, 32, 32, 16\)   2320        activation_1[0]) p n
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_2 \(BatchNor \(None, 32, 32, 16\)   64          conv2d_3[0][0] ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_2 \(Activation\)       \(None, 32, 32, 16\)   0           batch_normaliza) N
+(tion_2[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_4 \(Conv2D\)               \(None, 32, 32, 16\)   2320        activation_2[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_3 \(BatchNor \(None, 32, 32, 16\)   64          conv2d_4[0][0] ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(add_1 \(Add\)                     \(None, 32, 32, 16\)   0           conv2d_2[0][0] ) N
+(                  ) N
+(                                                                 batch_normaliza) N
+(tion_3[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_3 \(Activation\)       \(None, 32, 32, 16\)   0           add_1[0][0]    ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(max_pooling2d_1 \(MaxPooling2D\)  \(None, 16, 16, 16\)   0           activation_3[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_6 \(Conv2D\)               \(None, 16, 16, 32\)   4640        max_pooling2d_1) N
+([0][0]            ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_4 \(BatchNor \(None, 16, 16, 32\)   128         conv2d_6[0][0] ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_4 \(Activation\)       \(None, 16, 16, 32\)   0           batch_normaliza) N
+(tion_4[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_7 \(Conv2D\)               \(None, 16, 16, 32\)   9248        activation_4[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_5 \(BatchNor \(None, 16, 16, 32\)   128         conv2d_7[0][0] ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_5 \(Activation\)       \(None, 16, 16, 32\)   0           batch_normaliza) N
+(tion_5[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_8 \(Conv2D\)               \(None, 16, 16, 32\)   9248        activation_5[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_6 \(BatchNor \(None, 16, 16, 32\)   128         conv2d_8[0][0] ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(add_2 \(Add\)                     \(None, 16, 16, 32\)   0           conv2d_6[0][0] ) N
+(                  ) N
+(                                                                 batch_normaliza) N
+(CIFAR10ResOUT.txt) (Page 2/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (1/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3-4) 2
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(tion_6[0][0]      ) p n
+(________________________________________________________________________________) N
+(__________________) N
+(activation_6 \(Activation\)       \(None, 16, 16, 32\)   0           add_2[0][0]    ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(max_pooling2d_2 \(MaxPooling2D\)  \(None, 8, 8, 32\)     0           activation_6[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_10 \(Conv2D\)              \(None, 8, 8, 64\)     18496       max_pooling2d_2) N
+([0][0]            ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_7 \(BatchNor \(None, 8, 8, 64\)     256         conv2d_10[0][0]) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_7 \(Activation\)       \(None, 8, 8, 64\)     0           batch_normaliza) N
+(tion_7[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_11 \(Conv2D\)              \(None, 8, 8, 64\)     36928       activation_7[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_8 \(BatchNor \(None, 8, 8, 64\)     256         conv2d_11[0][0]) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_8 \(Activation\)       \(None, 8, 8, 64\)     0           batch_normaliza) N
+(tion_8[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(conv2d_12 \(Conv2D\)              \(None, 8, 8, 64\)     36928       activation_8[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(batch_normalization_9 \(BatchNor \(None, 8, 8, 64\)     256         conv2d_12[0][0]) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(add_3 \(Add\)                     \(None, 8, 8, 64\)     0           conv2d_10[0][0]) N
+(                  ) N
+(                                                                 batch_normaliza) N
+(tion_9[0][0]      ) N
+(________________________________________________________________________________) N
+(__________________) N
+(activation_9 \(Activation\)       \(None, 8, 8, 64\)     0           add_3[0][0]    ) N
+(                  ) N
+(________________________________________________________________________________) N
+(__________________) N
+(average_pooling2d_1 \(AveragePoo \(None, 1, 1, 64\)     0           activation_9[0]) N
+([0]               ) N
+(________________________________________________________________________________) N
+(__________________) N
+(flatten_1 \(Flatten\)             \(None, 64\)           0           average_pooling) N
+(2d_1[0][0]        ) N
+(________________________________________________________________________________) N
+(__________________) N
+(dense_1 \(Dense\)                 \(None, 10\)           650         flatten_1[0][0]) N
+(                  ) N
+(================================================================================) N
+(==================) N
+(Total params: 122,570) N
+(Trainable params: 121,898) N
+(Non-trainable params: 672) N
+(________________________________________________________________________________) N
+(CIFAR10ResOUT.txt) (Page 3/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(__________________) p n
+(Learning rate:  0.001) N
+(Epoch 1/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 16s 13ms/step - loss: 1.4749 - acc:) N
+( 0.4770 - val_loss: 1.3086 - val_acc: 0.5653) N
+(Epoch 2/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 1.1434 - acc:) N
+( 0.6102 - val_loss: 1.0706 - val_acc: 0.6390) N
+(Epoch 3/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 1.0164 - acc:) N
+( 0.6596 - val_loss: 1.0562 - val_acc: 0.6459) N
+(Epoch 4/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.9338 - acc:) N
+( 0.6907 - val_loss: 0.8485 - val_acc: 0.7305) N
+(Epoch 5/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.8820 - acc:) N
+( 0.7127 - val_loss: 0.8772 - val_acc: 0.7176) N
+(Epoch 6/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.8378 - acc:) N
+( 0.7308 - val_loss: 0.8777 - val_acc: 0.7195) N
+(Epoch 7/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.8055 - acc:) N
+( 0.7442 - val_loss: 0.8680 - val_acc: 0.7309) N
+(Epoch 8/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.7774 - acc:) N
+( 0.7521 - val_loss: 0.8256 - val_acc: 0.7491) N
+(Epoch 9/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.7523 - acc:) N
+( 0.7671 - val_loss: 0.7356 - val_acc: 0.7768) N
+(Epoch 10/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.7280 - acc:) N
+( 0.7767 - val_loss: 0.8331 - val_acc: 0.7533) N
+(Epoch 11/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.7158 - acc:) N
+( 0.7808 - val_loss: 0.7650 - val_acc: 0.7747) N
+(Epoch 12/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6966 - acc:) N
+( 0.7886 - val_loss: 0.7739 - val_acc: 0.7728) N
+(Epoch 13/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6894 - acc:) N
+( 0.7898 - val_loss: 0.7925 - val_acc: 0.7693) N
+(Epoch 14/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6781 - acc:) N
+( 0.7982 - val_loss: 0.7375 - val_acc: 0.7811) N
+(Epoch 15/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 16s 13ms/step - loss: 0.6620 - acc:) N
+( 0.8024 - val_loss: 0.7805 - val_acc: 0.7736) N
+(Epoch 16/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6542 - acc:) N
+( 0.8081 - val_loss: 0.7039 - val_acc: 0.7909) N
+(Epoch 17/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6421 - acc:) N
+(CIFAR10ResOUT.txt) (Page 4/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (2/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (5-6) 3
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( 0.8110 - val_loss: 0.7433 - val_acc: 0.7829) p n
+(Epoch 18/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6307 - acc:) N
+( 0.8163 - val_loss: 0.7693 - val_acc: 0.7715) N
+(Epoch 19/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6282 - acc:) N
+( 0.8185 - val_loss: 0.7840 - val_acc: 0.7741) N
+(Epoch 20/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.6202 - acc:) N
+( 0.8204 - val_loss: 0.6991 - val_acc: 0.8050) N
+(Epoch 21/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.6152 - acc:) N
+( 0.8237 - val_loss: 0.6725 - val_acc: 0.8108) N
+(Epoch 22/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.6072 - acc:) N
+( 0.8258 - val_loss: 0.8384 - val_acc: 0.7686) N
+(Epoch 23/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5932 - acc:) N
+( 0.8331 - val_loss: 0.6745 - val_acc: 0.8053) N
+(Epoch 24/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5978 - acc:) N
+( 0.8315 - val_loss: 0.7057 - val_acc: 0.8035) N
+(Epoch 25/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5868 - acc:) N
+( 0.8344 - val_loss: 0.6727 - val_acc: 0.8169) N
+(Epoch 26/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5848 - acc:) N
+( 0.8357 - val_loss: 0.8429 - val_acc: 0.7649) N
+(Epoch 27/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 16s 12ms/step - loss: 0.5796 - acc:) N
+( 0.8360 - val_loss: 0.7166 - val_acc: 0.8026) N
+(Epoch 28/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5747 - acc:) N
+( 0.8420 - val_loss: 0.7497 - val_acc: 0.7998) N
+(Epoch 29/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5698 - acc:) N
+( 0.8416 - val_loss: 0.9127 - val_acc: 0.7538) N
+(Epoch 30/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5621 - acc:) N
+( 0.8479 - val_loss: 0.6676 - val_acc: 0.8175) N
+(Epoch 31/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5601 - acc:) N
+( 0.8465 - val_loss: 0.6992 - val_acc: 0.8107) N
+(Epoch 32/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5561 - acc:) N
+( 0.8471 - val_loss: 0.7428 - val_acc: 0.8020) N
+(Epoch 33/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 16s 12ms/step - loss: 0.5502 - acc:) N
+( 0.8501 - val_loss: 0.7155 - val_acc: 0.8052) N
+(Epoch 34/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5483 - acc:) N
+( 0.8521 - val_loss: 0.8579 - val_acc: 0.7702) N
+(CIFAR10ResOUT.txt) (Page 5/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Epoch 35/200) p n
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5466 - acc:) N
+( 0.8518 - val_loss: 0.8311 - val_acc: 0.7889) N
+(Epoch 36/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5387 - acc:) N
+( 0.8551 - val_loss: 0.6485 - val_acc: 0.8285) N
+(Epoch 37/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5387 - acc:) N
+( 0.8536 - val_loss: 0.7839 - val_acc: 0.7875) N
+(Epoch 38/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5335 - acc:) N
+( 0.8571 - val_loss: 0.8836 - val_acc: 0.7732) N
+(Epoch 39/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5314 - acc:) N
+( 0.8598 - val_loss: 0.7096 - val_acc: 0.8116) N
+(Epoch 40/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5283 - acc:) N
+( 0.8605 - val_loss: 0.6620 - val_acc: 0.8289) N
+(Epoch 41/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5231 - acc:) N
+( 0.8616 - val_loss: 0.7453 - val_acc: 0.8005) N
+(Epoch 42/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5235 - acc:) N
+( 0.8616 - val_loss: 0.7081 - val_acc: 0.8084) N
+(Epoch 43/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5187 - acc:) N
+( 0.8619 - val_loss: 0.6772 - val_acc: 0.8221) N
+(Epoch 44/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5217 - acc:) N
+( 0.8623 - val_loss: 0.7082 - val_acc: 0.8125) N
+(Epoch 45/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5139 - acc:) N
+( 0.8655 - val_loss: 0.8349 - val_acc: 0.7724) N
+(Epoch 46/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5194 - acc:) N
+( 0.8636 - val_loss: 0.6772 - val_acc: 0.8148) N
+(Epoch 47/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5143 - acc:) N
+( 0.8644 - val_loss: 0.6992 - val_acc: 0.8144) N
+(Epoch 48/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5114 - acc:) N
+( 0.8666 - val_loss: 0.7683 - val_acc: 0.8022) N
+(Epoch 49/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5106 - acc:) N
+( 0.8669 - val_loss: 0.6363 - val_acc: 0.8359) N
+(Epoch 50/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5093 - acc:) N
+( 0.8668 - val_loss: 0.6366 - val_acc: 0.8331) N
+(Epoch 51/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5007 - acc:) N
+( 0.8712 - val_loss: 0.8281 - val_acc: 0.7901) N
+(Epoch 52/200) N
+(CIFAR10ResOUT.txt) (Page 6/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (3/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (7-8) 4
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Learning rate:  0.001) p n
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.5039 - acc:) N
+( 0.8703 - val_loss: 0.7143 - val_acc: 0.8152) N
+(Epoch 53/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4998 - acc:) N
+( 0.8717 - val_loss: 0.6902 - val_acc: 0.8238) N
+(Epoch 54/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4977 - acc:) N
+( 0.8729 - val_loss: 0.7263 - val_acc: 0.8140) N
+(Epoch 55/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4977 - acc:) N
+( 0.8721 - val_loss: 0.7570 - val_acc: 0.8141) N
+(Epoch 56/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4923 - acc:) N
+( 0.8751 - val_loss: 0.6404 - val_acc: 0.8352) N
+(Epoch 57/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4971 - acc:) N
+( 0.8732 - val_loss: 0.7372 - val_acc: 0.8139) N
+(Epoch 58/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4905 - acc:) N
+( 0.8756 - val_loss: 0.7509 - val_acc: 0.8103) N
+(Epoch 59/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4858 - acc:) N
+( 0.8786 - val_loss: 0.7023 - val_acc: 0.8199) N
+(Epoch 60/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4890 - acc:) N
+( 0.8757 - val_loss: 0.6721 - val_acc: 0.8264) N
+(Epoch 61/200) N
+(Learning rate:  0.001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.4882 - acc:) N
+( 0.8761 - val_loss: 0.5843 - val_acc: 0.8533) N
+(Epoch 62/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3992 - acc:) N
+( 0.9085 - val_loss: 0.5102 - val_acc: 0.8722) N
+(Epoch 63/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3784 - acc:) N
+( 0.9148 - val_loss: 0.5204 - val_acc: 0.8730) N
+(Epoch 64/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3634 - acc:) N
+( 0.9191 - val_loss: 0.5328 - val_acc: 0.8691) N
+(Epoch 65/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3610 - acc:) N
+( 0.9205 - val_loss: 0.5261 - val_acc: 0.8700) N
+(Epoch 66/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3548 - acc:) N
+( 0.9205 - val_loss: 0.5163 - val_acc: 0.8740) N
+(Epoch 67/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3488 - acc:) N
+( 0.9239 - val_loss: 0.5103 - val_acc: 0.8729) N
+(Epoch 68/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3443 - acc:) N
+( 0.9259 - val_loss: 0.5043 - val_acc: 0.8739) N
+(Epoch 69/200) N
+(Learning rate:  0.0001) N
+(CIFAR10ResOUT.txt) (Page 7/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3443 - acc:) p n
+( 0.9259 - val_loss: 0.5044 - val_acc: 0.8754) N
+(Epoch 70/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3347 - acc:) N
+( 0.9274 - val_loss: 0.5024 - val_acc: 0.8771) N
+(Epoch 71/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3345 - acc:) N
+( 0.9262 - val_loss: 0.5101 - val_acc: 0.8768) N
+(Epoch 72/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3302 - acc:) N
+( 0.9284 - val_loss: 0.5065 - val_acc: 0.8761) N
+(Epoch 73/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3292 - acc:) N
+( 0.9273 - val_loss: 0.5135 - val_acc: 0.8744) N
+(Epoch 74/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3242 - acc:) N
+( 0.9311 - val_loss: 0.4954 - val_acc: 0.8768) N
+(Epoch 75/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3227 - acc:) N
+( 0.9300 - val_loss: 0.5004 - val_acc: 0.8786) N
+(Epoch 76/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3180 - acc:) N
+( 0.9312 - val_loss: 0.5084 - val_acc: 0.8775) N
+(Epoch 77/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3156 - acc:) N
+( 0.9315 - val_loss: 0.5106 - val_acc: 0.8766) N
+(Epoch 78/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3130 - acc:) N
+( 0.9319 - val_loss: 0.5015 - val_acc: 0.8763) N
+(Epoch 79/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3111 - acc:) N
+( 0.9318 - val_loss: 0.5123 - val_acc: 0.8766) N
+(Epoch 80/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3098 - acc:) N
+( 0.9336 - val_loss: 0.4992 - val_acc: 0.8789) N
+(Epoch 81/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3051 - acc:) N
+( 0.9335 - val_loss: 0.4970 - val_acc: 0.8804) N
+(Epoch 82/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3106 - acc:) N
+( 0.9320 - val_loss: 0.5063 - val_acc: 0.8772) N
+(Epoch 83/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3029 - acc:) N
+( 0.9349 - val_loss: 0.5012 - val_acc: 0.8770) N
+(Epoch 84/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.3009 - acc:) N
+( 0.9348 - val_loss: 0.5256 - val_acc: 0.8722) N
+(Epoch 85/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.3018 - acc:) N
+( 0.9337 - val_loss: 0.5115 - val_acc: 0.8757) N
+(Epoch 86/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2989 - acc:) N
+(CIFAR10ResOUT.txt) (Page 8/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (4/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (9-10) 5
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( 0.9350 - val_loss: 0.5071 - val_acc: 0.8785) p n
+(Epoch 87/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2940 - acc:) N
+( 0.9375 - val_loss: 0.4906 - val_acc: 0.8792) N
+(Epoch 88/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 19s 15ms/step - loss: 0.2961 - acc:) N
+( 0.9354 - val_loss: 0.5134 - val_acc: 0.8752) N
+(Epoch 89/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2908 - acc:) N
+( 0.9380 - val_loss: 0.5268 - val_acc: 0.8704) N
+(Epoch 90/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2939 - acc:) N
+( 0.9364 - val_loss: 0.5052 - val_acc: 0.8776) N
+(Epoch 91/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2889 - acc:) N
+( 0.9382 - val_loss: 0.5071 - val_acc: 0.8752) N
+(Epoch 92/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2880 - acc:) N
+( 0.9369 - val_loss: 0.5061 - val_acc: 0.8758) N
+(Epoch 93/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2888 - acc:) N
+( 0.9365 - val_loss: 0.4870 - val_acc: 0.8803) N
+(Epoch 94/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2854 - acc:) N
+( 0.9376 - val_loss: 0.5062 - val_acc: 0.8750) N
+(Epoch 95/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2847 - acc:) N
+( 0.9374 - val_loss: 0.5059 - val_acc: 0.8739) N
+(Epoch 96/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2814 - acc:) N
+( 0.9395 - val_loss: 0.4956 - val_acc: 0.8777) N
+(Epoch 97/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2792 - acc:) N
+( 0.9395 - val_loss: 0.5021 - val_acc: 0.8763) N
+(Epoch 98/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2774 - acc:) N
+( 0.9393 - val_loss: 0.5079 - val_acc: 0.8737) N
+(Epoch 99/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2781 - acc:) N
+( 0.9405 - val_loss: 0.5140 - val_acc: 0.8727) N
+(Epoch 100/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2760 - acc:) N
+( 0.9406 - val_loss: 0.4972 - val_acc: 0.8777) N
+(Epoch 101/200) N
+(Learning rate:  0.0001) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2778 - acc:) N
+( 0.9397 - val_loss: 0.4814 - val_acc: 0.8788) N
+(Epoch 102/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2628 - acc:) N
+( 0.9464 - val_loss: 0.4901 - val_acc: 0.8790) N
+(Epoch 103/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2611 - acc:) N
+( 0.9454 - val_loss: 0.4875 - val_acc: 0.8800) N
+(CIFAR10ResOUT.txt) (Page 9/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Epoch 104/200) p n
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2596 - acc:) N
+( 0.9456 - val_loss: 0.4890 - val_acc: 0.8810) N
+(Epoch 105/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2613 - acc:) N
+( 0.9464 - val_loss: 0.4845 - val_acc: 0.8818) N
+(Epoch 106/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2595 - acc:) N
+( 0.9462 - val_loss: 0.4844 - val_acc: 0.8824) N
+(Epoch 107/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2596 - acc:) N
+( 0.9467 - val_loss: 0.4880 - val_acc: 0.8803) N
+(Epoch 108/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2600 - acc:) N
+( 0.9454 - val_loss: 0.4862 - val_acc: 0.8810) N
+(Epoch 109/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2572 - acc:) N
+( 0.9474 - val_loss: 0.4834 - val_acc: 0.8824) N
+(Epoch 110/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2594 - acc:) N
+( 0.9462 - val_loss: 0.4843 - val_acc: 0.8806) N
+(Epoch 111/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2578 - acc:) N
+( 0.9461 - val_loss: 0.4851 - val_acc: 0.8813) N
+(Epoch 112/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2566 - acc:) N
+( 0.9466 - val_loss: 0.4827 - val_acc: 0.8813) N
+(Epoch 113/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2567 - acc:) N
+( 0.9470 - val_loss: 0.4884 - val_acc: 0.8816) N
+(Epoch 114/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2570 - acc:) N
+( 0.9470 - val_loss: 0.4905 - val_acc: 0.8815) N
+(Epoch 115/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2540 - acc:) N
+( 0.9486 - val_loss: 0.4808 - val_acc: 0.8815) N
+(Epoch 116/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2565 - acc:) N
+( 0.9475 - val_loss: 0.4838 - val_acc: 0.8822) N
+(Epoch 117/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2536 - acc:) N
+( 0.9479 - val_loss: 0.4825 - val_acc: 0.8820) N
+(Epoch 118/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2548 - acc:) N
+( 0.9476 - val_loss: 0.4851 - val_acc: 0.8821) N
+(Epoch 119/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2565 - acc:) N
+( 0.9459 - val_loss: 0.4874 - val_acc: 0.8816) N
+(Epoch 120/200) N
+(Learning rate:  1e-05) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2553 - acc:) N
+( 0.9473 - val_loss: 0.4905 - val_acc: 0.8815) N
+(Epoch 121/200) N
+(CIFAR10ResOUT.txt) (Page 10/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (5/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (11-12) 6
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Learning rate:  1e-05) p n
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2545 - acc:) N
+( 0.9490 - val_loss: 0.4856 - val_acc: 0.8831) N
+(Epoch 122/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2525 - acc:) N
+( 0.9484 - val_loss: 0.4854 - val_acc: 0.8821) N
+(Epoch 123/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2559 - acc:) N
+( 0.9474 - val_loss: 0.4860 - val_acc: 0.8817) N
+(Epoch 124/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2537 - acc:) N
+( 0.9487 - val_loss: 0.4848 - val_acc: 0.8820) N
+(Epoch 125/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2496 - acc:) N
+( 0.9505 - val_loss: 0.4835 - val_acc: 0.8825) N
+(Epoch 126/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2512 - acc:) N
+( 0.9496 - val_loss: 0.4829 - val_acc: 0.8831) N
+(Epoch 127/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2540 - acc:) N
+( 0.9476 - val_loss: 0.4844 - val_acc: 0.8821) N
+(Epoch 128/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2550 - acc:) N
+( 0.9481 - val_loss: 0.4836 - val_acc: 0.8826) N
+(Epoch 129/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2531 - acc:) N
+( 0.9485 - val_loss: 0.4849 - val_acc: 0.8823) N
+(Epoch 130/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2491 - acc:) N
+( 0.9499 - val_loss: 0.4848 - val_acc: 0.8831) N
+(Epoch 131/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2537 - acc:) N
+( 0.9471 - val_loss: 0.4830 - val_acc: 0.8831) N
+(Epoch 132/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2544 - acc:) N
+( 0.9479 - val_loss: 0.4866 - val_acc: 0.8819) N
+(Epoch 133/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2532 - acc:) N
+( 0.9480 - val_loss: 0.4846 - val_acc: 0.8824) N
+(Epoch 134/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2529 - acc:) N
+( 0.9486 - val_loss: 0.4832 - val_acc: 0.8838) N
+(Epoch 135/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2505 - acc:) N
+( 0.9489 - val_loss: 0.4866 - val_acc: 0.8822) N
+(Epoch 136/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2537 - acc:) N
+( 0.9477 - val_loss: 0.4864 - val_acc: 0.8823) N
+(Epoch 137/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2525 - acc:) N
+( 0.9485 - val_loss: 0.4859 - val_acc: 0.8831) N
+(Epoch 138/200) N
+(Learning rate:  1e-06) N
+(CIFAR10ResOUT.txt) (Page 11/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2545 - acc:) p n
+( 0.9476 - val_loss: 0.4841 - val_acc: 0.8838) N
+(Epoch 139/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2512 - acc:) N
+( 0.9479 - val_loss: 0.4852 - val_acc: 0.8824) N
+(Epoch 140/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2525 - acc:) N
+( 0.9482 - val_loss: 0.4861 - val_acc: 0.8828) N
+(Epoch 141/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2531 - acc:) N
+( 0.9470 - val_loss: 0.4830 - val_acc: 0.8846) N
+(Epoch 142/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2523 - acc:) N
+( 0.9482 - val_loss: 0.4825 - val_acc: 0.8836) N
+(Epoch 143/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2530 - acc:) N
+( 0.9491 - val_loss: 0.4840 - val_acc: 0.8833) N
+(Epoch 144/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2531 - acc:) N
+( 0.9482 - val_loss: 0.4843 - val_acc: 0.8833) N
+(Epoch 145/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2511 - acc:) N
+( 0.9480 - val_loss: 0.4869 - val_acc: 0.8834) N
+(Epoch 146/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2518 - acc:) N
+( 0.9482 - val_loss: 0.4844 - val_acc: 0.8841) N
+(Epoch 147/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2499 - acc:) N
+( 0.9495 - val_loss: 0.4847 - val_acc: 0.8829) N
+(Epoch 148/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2527 - acc:) N
+( 0.9491 - val_loss: 0.4851 - val_acc: 0.8834) N
+(Epoch 149/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2533 - acc:) N
+( 0.9476 - val_loss: 0.4841 - val_acc: 0.8838) N
+(Epoch 150/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2530 - acc:) N
+( 0.9494 - val_loss: 0.4843 - val_acc: 0.8839) N
+(Epoch 151/200) N
+(Learning rate:  1e-06) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2539 - acc:) N
+( 0.9487 - val_loss: 0.4837 - val_acc: 0.8841) N
+(Epoch 152/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2513 - acc:) N
+( 0.9497 - val_loss: 0.4840 - val_acc: 0.8843) N
+(Epoch 153/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2524 - acc:) N
+( 0.9478 - val_loss: 0.4849 - val_acc: 0.8837) N
+(Epoch 154/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2539 - acc:) N
+( 0.9473 - val_loss: 0.4859 - val_acc: 0.8832) N
+(Epoch 155/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2531 - acc:) N
+(CIFAR10ResOUT.txt) (Page 12/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (6/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (13-14) 7
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+( 0.9483 - val_loss: 0.4825 - val_acc: 0.8837) p n
+(Epoch 156/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2524 - acc:) N
+( 0.9490 - val_loss: 0.4851 - val_acc: 0.8833) N
+(Epoch 157/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2533 - acc:) N
+( 0.9485 - val_loss: 0.4852 - val_acc: 0.8837) N
+(Epoch 158/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2519 - acc:) N
+( 0.9492 - val_loss: 0.4832 - val_acc: 0.8840) N
+(Epoch 159/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2537 - acc:) N
+( 0.9474 - val_loss: 0.4840 - val_acc: 0.8839) N
+(Epoch 160/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2485 - acc:) N
+( 0.9510 - val_loss: 0.4844 - val_acc: 0.8841) N
+(Epoch 161/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2545 - acc:) N
+( 0.9474 - val_loss: 0.4842 - val_acc: 0.8832) N
+(Epoch 162/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2537 - acc:) N
+( 0.9484 - val_loss: 0.4836 - val_acc: 0.8842) N
+(Epoch 163/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2513 - acc:) N
+( 0.9497 - val_loss: 0.4846 - val_acc: 0.8837) N
+(Epoch 164/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2538 - acc:) N
+( 0.9471 - val_loss: 0.4867 - val_acc: 0.8830) N
+(Epoch 165/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2528 - acc:) N
+( 0.9481 - val_loss: 0.4822 - val_acc: 0.8843) N
+(Epoch 166/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2497 - acc:) N
+( 0.9499 - val_loss: 0.4837 - val_acc: 0.8834) N
+(Epoch 167/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2550 - acc:) N
+( 0.9479 - val_loss: 0.4833 - val_acc: 0.8839) N
+(Epoch 168/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2531 - acc:) N
+( 0.9480 - val_loss: 0.4842 - val_acc: 0.8834) N
+(Epoch 169/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2520 - acc:) N
+( 0.9484 - val_loss: 0.4841 - val_acc: 0.8835) N
+(Epoch 170/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2521 - acc:) N
+( 0.9481 - val_loss: 0.4840 - val_acc: 0.8838) N
+(Epoch 171/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2512 - acc:) N
+( 0.9494 - val_loss: 0.4843 - val_acc: 0.8837) N
+(Epoch 172/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2531 - acc:) N
+( 0.9481 - val_loss: 0.4850 - val_acc: 0.8835) N
+(CIFAR10ResOUT.txt) (Page 13/15) (Oct 04, 18 1:08) title
+border
+/v 1 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Epoch 173/200) p n
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2498 - acc:) N
+( 0.9504 - val_loss: 0.4851 - val_acc: 0.8834) N
+(Epoch 174/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2493 - acc:) N
+( 0.9497 - val_loss: 0.4844 - val_acc: 0.8833) N
+(Epoch 175/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2502 - acc:) N
+( 0.9487 - val_loss: 0.4852 - val_acc: 0.8833) N
+(Epoch 176/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2524 - acc:) N
+( 0.9487 - val_loss: 0.4850 - val_acc: 0.8829) N
+(Epoch 177/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2542 - acc:) N
+( 0.9471 - val_loss: 0.4825 - val_acc: 0.8841) N
+(Epoch 178/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2510 - acc:) N
+( 0.9492 - val_loss: 0.4853 - val_acc: 0.8836) N
+(Epoch 179/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2501 - acc:) N
+( 0.9487 - val_loss: 0.4843 - val_acc: 0.8839) N
+(Epoch 180/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2516 - acc:) N
+( 0.9479 - val_loss: 0.4826 - val_acc: 0.8838) N
+(Epoch 181/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2510 - acc:) N
+( 0.9493 - val_loss: 0.4838 - val_acc: 0.8841) N
+(Epoch 182/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2527 - acc:) N
+( 0.9480 - val_loss: 0.4834 - val_acc: 0.8836) N
+(Epoch 183/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2526 - acc:) N
+( 0.9473 - val_loss: 0.4846 - val_acc: 0.8836) N
+(Epoch 184/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2517 - acc:) N
+( 0.9487 - val_loss: 0.4856 - val_acc: 0.8834) N
+(Epoch 185/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2515 - acc:) N
+( 0.9473 - val_loss: 0.4853 - val_acc: 0.8833) N
+(Epoch 186/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2527 - acc:) N
+( 0.9488 - val_loss: 0.4827 - val_acc: 0.8846) N
+(Epoch 187/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2542 - acc:) N
+( 0.9489 - val_loss: 0.4834 - val_acc: 0.8842) N
+(Epoch 188/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2510 - acc:) N
+( 0.9494 - val_loss: 0.4830 - val_acc: 0.8834) N
+(Epoch 189/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2538 - acc:) N
+( 0.9484 - val_loss: 0.4848 - val_acc: 0.8827) N
+(Epoch 190/200) N
+(CIFAR10ResOUT.txt) (Page 14/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (7/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (15) 8
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 3.147420 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(Learning rate:  5e-07) p n
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2496 - acc:) N
+( 0.9487 - val_loss: 0.4836 - val_acc: 0.8836) N
+(Epoch 191/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2496 - acc:) N
+( 0.9500 - val_loss: 0.4843 - val_acc: 0.8836) N
+(Epoch 192/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2521 - acc:) N
+( 0.9497 - val_loss: 0.4842 - val_acc: 0.8839) N
+(Epoch 193/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2526 - acc:) N
+( 0.9476 - val_loss: 0.4828 - val_acc: 0.8841) N
+(Epoch 194/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2504 - acc:) N
+( 0.9491 - val_loss: 0.4828 - val_acc: 0.8843) N
+(Epoch 195/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2496 - acc:) N
+( 0.9490 - val_loss: 0.4835 - val_acc: 0.8841) N
+(Epoch 196/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2510 - acc:) N
+( 0.9486 - val_loss: 0.4830 - val_acc: 0.8841) N
+(Epoch 197/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2524 - acc:) N
+( 0.9494 - val_loss: 0.4837 - val_acc: 0.8842) N
+(Epoch 198/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2489 - acc:) N
+( 0.9492 - val_loss: 0.4836 - val_acc: 0.8839) N
+(Epoch 199/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 15s 12ms/step - loss: 0.2506 - acc:) N
+( 0.9485 - val_loss: 0.4855 - val_acc: 0.8829) N
+(Epoch 200/200) N
+(Learning rate:  5e-07) N
+(1250/1250 [==============================] - 14s 12ms/step - loss: 0.2501 - acc:) N
+( 0.9488 - val_loss: 0.4845 - val_acc: 0.8831) N
+(10000/10000 [==============================] - 1s 105us/step) N
+(Test loss: 0.5143441814422608) N
+(Test accuracy: 0.8784) N
+(CIFAR10ResOUT.txt) (Page 15/15) (Oct 04, 18 1:08) title
+border
+grestore
+(Printed by ostap) rhead
+(CIFAR10ResOUT.txt) (8/8) (Thursday October 04, 2018) footer
+end % of iso1dict
+pagesave restore
+showpage
+
+%%Trailer
+end
+%%EOF
