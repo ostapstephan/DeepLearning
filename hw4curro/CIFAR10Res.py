@@ -143,9 +143,7 @@ datagen.fit(x_t)
 lr_scheduler = LearningRateScheduler(lr_schedule)
 
 lr_reducer = ReduceLROnPlateau(factor=np.sqrt(0.1),
-                               cooldown=0,
-                               patience=5,
-                               min_lr=0.5e-6)
+	cooldown=0,patience=5,min_lr=0.5e-6)
 
 callbacks = [lr_reducer, lr_scheduler]
 
