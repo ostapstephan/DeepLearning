@@ -12,7 +12,6 @@ from keras.models import Sequential
 from keras.datasets import cifar10
 from keras.layers import Dense, Dropout, Flatten,Conv2D, MaxPooling2D, Activation, BatchNormalization
 from keras import regularizers
-
 #from keras import backend as K
 
 num_classes=10
@@ -20,7 +19,6 @@ BATCH_SIZE = 256
 epochs = 64 #we: achieve overfitting after like 15-20 epochs
 DROP_RATE =.2
 weight_decay = 1e-4
-
 
 def genTrainAndVal(f,l): #split the features and labels of the training data 80:20 train and validation
 	lx=f.shape[0]
@@ -42,7 +40,7 @@ def genTrainAndVal(f,l): #split the features and labels of the training data 80:
 #from keras.datasets import cifar100
 #(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode='fine')
 
-#Convert to float and normalize
+#fonvert to float and normalize
 x_train,x_test = x_train.astype('float32'),x_test.astype('float32')
 x_train,x_test = x_train/255,x_test/255
 
@@ -98,7 +96,6 @@ model.add(Flatten())
 model.add(Dense(num_classes,activation="softmax"))
 
 model.summary()
-
 
 model.compile(loss=keras.losses.categorical_crossentropy,
 	optimizer=keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False),
