@@ -1,0 +1,110 @@
+(venv) ostap@ostap-All-Series:~/Documents/DeepLearning/hw4curro$ python isaac.py 
+Using TensorFlow backend.
+2018-10-04 14:10:23.231190: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-10-04 14:10:23.329536: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-10-04 14:10:23.329992: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 0 with properties: 
+name: GeForce GTX 980 major: 5 minor: 2 memoryClockRate(GHz): 1.2785
+pciBusID: 0000:01:00.0
+totalMemory: 3.94GiB freeMemory: 3.16GiB
+2018-10-04 14:10:23.397368: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-10-04 14:10:23.397787: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 1 with properties: 
+name: GeForce GTX 970 major: 5 minor: 2 memoryClockRate(GHz): 1.329
+pciBusID: 0000:02:00.0
+totalMemory: 3.94GiB freeMemory: 3.87GiB
+2018-10-04 14:10:23.397990: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1490] Adding visible gpu devices: 0, 1
+2018-10-04 14:10:23.766975: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-10-04 14:10:23.767002: I tensorflow/core/common_runtime/gpu/gpu_device.cc:977]      0 1 
+2018-10-04 14:10:23.767007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 0:   N Y 
+2018-10-04 14:10:23.767010: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 1:   Y N 
+2018-10-04 14:10:23.767226: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2874 MB memory) -> physical GPU (device: 0, name: GeForce GTX 980, pci bus id: 0000:01:00.0, compute capability: 5.2)
+2018-10-04 14:10:23.791415: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 3599 MB memory) -> physical GPU (device: 1, name: GeForce GTX 970, pci bus id: 0000:02:00.0, compute capability: 5.2)
+Learning rate:  0.001
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1 (Conv2D)            (None, 32, 32, 32)        416       
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 32, 32, 32)        128       
+_________________________________________________________________
+activation_1 (Activation)    (None, 32, 32, 32)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 32, 32, 32)        16416     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 32, 32, 32)        128       
+_________________________________________________________________
+activation_2 (Activation)    (None, 32, 32, 32)        0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 16, 16, 32)        0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 16, 16, 64)        32832     
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+activation_3 (Activation)    (None, 16, 16, 64)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 16, 16, 64)        16448     
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+activation_4 (Activation)    (None, 16, 16, 64)        0         
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 8, 8, 64)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 4096)              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 100)               409700    
+=================================================================
+Total params: 476,580
+Trainable params: 476,196
+Non-trainable params: 384
+_________________________________________________________________
+Epoch 1/16
+Learning rate:  0.001
+1407/1406 [==============================] - 16s 11ms/step - loss: 4.2003 - top_k_categorical_accuracy: 0.3401 - val_loss: 3.6871 - val_top_k_categorical_accuracy: 0.4534
+Epoch 2/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 3.1219 - top_k_categorical_accuracy: 0.5273 - val_loss: 2.9627 - val_top_k_categorical_accuracy: 0.5692
+Epoch 3/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.8024 - top_k_categorical_accuracy: 0.6033 - val_loss: 2.8142 - val_top_k_categorical_accuracy: 0.6026
+Epoch 4/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.5936 - top_k_categorical_accuracy: 0.6484 - val_loss: 2.7155 - val_top_k_categorical_accuracy: 0.6348
+Epoch 5/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.4706 - top_k_categorical_accuracy: 0.6770 - val_loss: 2.4985 - val_top_k_categorical_accuracy: 0.6746
+Epoch 6/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.3578 - top_k_categorical_accuracy: 0.7000 - val_loss: 2.4965 - val_top_k_categorical_accuracy: 0.6724
+Epoch 7/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.2776 - top_k_categorical_accuracy: 0.7149 - val_loss: 2.3552 - val_top_k_categorical_accuracy: 0.7034
+Epoch 8/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.2125 - top_k_categorical_accuracy: 0.7286 - val_loss: 2.4517 - val_top_k_categorical_accuracy: 0.6962
+Epoch 9/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.1497 - top_k_categorical_accuracy: 0.7414 - val_loss: 2.4196 - val_top_k_categorical_accuracy: 0.6966
+Epoch 10/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.1019 - top_k_categorical_accuracy: 0.7478 - val_loss: 2.4384 - val_top_k_categorical_accuracy: 0.6956
+Epoch 11/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.0652 - top_k_categorical_accuracy: 0.7546 - val_loss: 2.2733 - val_top_k_categorical_accuracy: 0.7208
+Epoch 12/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 2.0202 - top_k_categorical_accuracy: 0.7649 - val_loss: 2.2147 - val_top_k_categorical_accuracy: 0.7320
+Epoch 13/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 1.9962 - top_k_categorical_accuracy: 0.7721 - val_loss: 2.2272 - val_top_k_categorical_accuracy: 0.7246
+Epoch 14/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 1.9601 - top_k_categorical_accuracy: 0.7761 - val_loss: 2.2169 - val_top_k_categorical_accuracy: 0.7256
+Epoch 15/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 1.9314 - top_k_categorical_accuracy: 0.7806 - val_loss: 2.3169 - val_top_k_categorical_accuracy: 0.7232
+Epoch 16/16
+Learning rate:  0.001
+1407/1406 [==============================] - 15s 11ms/step - loss: 1.9023 - top_k_categorical_accuracy: 0.7877 - val_loss: 2.2965 - val_top_k_categorical_accuracy: 0.7180
+Test loss: 2.273707925033569
+Test accuracy: 0.7204
