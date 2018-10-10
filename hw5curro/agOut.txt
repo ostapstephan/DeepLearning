@@ -1,0 +1,22 @@
+(venv) ostap@ostap-All-Series:~/Documents/DeepLearning/hw5curro$ CUDA_VISIBLE_DEVICES=0 python ag.py Using TensorFlow backend.
+Train on 114000 samples, validate on 6000 samples
+Epoch 1/2
+2018-10-10 00:51:42.447309: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-10-10 00:51:42.510410: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-10-10 00:51:42.510868: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 0 with properties: 
+name: GeForce GTX 980 major: 5 minor: 2 memoryClockRate(GHz): 1.2785
+pciBusID: 0000:01:00.0
+totalMemory: 3.94GiB freeMemory: 2.77GiB
+2018-10-10 00:51:42.510883: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1490] Adding visible gpu devices: 0
+2018-10-10 00:51:42.693621: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-10-10 00:51:42.693664: I tensorflow/core/common_runtime/gpu/gpu_device.cc:977]      0 
+2018-10-10 00:51:42.693669: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 0:   N 
+2018-10-10 00:51:42.693824: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2473 MB memory) -> physical GPU (device: 0, name: GeForce GTX 980, pci bus id: 0000:01:00.0, compute capability: 5.2)
+114000/114000 [==============================] - 9s 80us/step - loss: 0.4342 - acc: 0.8536 - val_loss: 0.2533 - val_acc: 0.9175
+Epoch 2/2
+114000/114000 [==============================] - 8s 74us/step - loss: 0.2031 - acc: 0.9336 - val_loss: 0.2390 - val_acc: 0.9220
+7600/7600 [==============================] - 0s 27us/step
+Test loss: 0.24406225435827908
+Test accuracy: 0.9219736842105263
+(venv) ostap@ostap-All-Series:~/Documents/DeepLearning/hw5curro$ 
+
