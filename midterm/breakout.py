@@ -13,6 +13,7 @@ import gym
 import time
 import keras
 import random
+import pylab
 from gym import wrappers
 import numpy as np
 import pandas as pd
@@ -21,7 +22,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 
-EPISODES = 40000
+EPISODES = 4000000
 
 class DDQN:
 	def __init__(self, stateSize,actionSize):
@@ -29,39 +30,37 @@ class DDQN:
 		self.loadModel = False
 
 		self.stateSize = stateSize
-		self.df = 7 #discretizationfactor
-		self.actionSizeDiscretized = self.df**actionSize
+		self.actionSize = actionSize
 
-		self.memory = deque(maxlen=900000)
-		self.gamma = .95
+		self.memory = deque(maxlen=10000000)
+		self.gamma = .99
 		self.tau = 0.125
-		self.epsilon = 1
+		self.epsilon = 1.0
 		self.epsilonMin = 0.01 #1 percent random actions
-		self.epsilonDecay = 0.9995
+		annealedFrames = 250000
+		self.epsilonDecay = (self.epsilon-self.epsilonMin)/annealedFrames
 
+		self.learningRate = 0.0000625
+		self.adamEpsilon = 0.00015
 
-		self.learningRate = 0.005 #adam LR
-		self.batchSize = 32
+		self.trainingStart = 200000
+		self.batchSize = 64
 
 		self.model = self.buildModel()
 		self.targetModel = self.buildModel()
 
-		if self.loadModel:
-			self.daftPunk(1,'./luka_1540391782.5540128')
-			self.epsilon = self.epsilonMin
+		#if self.loadModel:
+		#	self.daftPunk(1,'./luka_1540391782.5540128')
+		#	self.epsilon = self.epsilonMin
 
 		self.updateTargetModel()
 
-
-		self.aMatrix = self.genAMatrix()
-
 	def buildModel(self):
 		model = Sequential()
-		model.add(Dense(24, input_dim=self.stateSize, activation="relu"))
-		model.add(Dense(48, activation="relu"))
-		model.add(Dense(24, activation="relu"))
-		model.add(Dense(self.actionSizeDiscretized)) #no activation this is a regression
-		model.compile(loss="mse",optimizer=keras.optimizers.Adam())
+		model.add(Dense(128, input_dim=self.stateSize, activation="relu"))
+		model.add(Dense(32, activation="relu"))
+		model.add(Dense(self.actionSize, activation="linear")) #no activation this is a regression
+		model.compile(loss="mse",optimizer=keras.optimizers.Adam(lr=self.learningRate, epsilon=self.adamEpsilon))
 		#print(model.summary())
 		return model
 
@@ -70,14 +69,12 @@ class DDQN:
 
 	def act(self, state):
 		if np.random.uniform() < self.epsilon:
-			action = round(np.random.uniform(self.actionSizeDiscretized-1))
+			return random.randrange(self.actionSize)
 		else:
-			action = self.model.predict(state).argmax()
-
-		return action
+			return self.model.predict(state).argmax()
 
 	def replay(self):
-		if len(self.memory)<self.batchSize:
+		if len(self.memory)<self.trainingStart:
 			return
 
 		batches = random.sample(self.memory, self.batchSize)
@@ -96,19 +93,7 @@ class DDQN:
 			self.model.fit(state,target,epochs=1,verbose=0)
 
 		if self.epsilon > self.epsilonMin:
-			self.epsilon *= self.epsilonDecay
-
-	def genAMatrix(self):
-		i = [-1,-0.66,-0.33,0,0.33,0.66,1]#[-1,-0.5,0,0.5,1] #[-1 + x*(1-(-1))/(self.actionSizeDiscretized-1) for x in range(self.actionSizeDiscretized)]
-		mat = []
-		for a in i:
-			for b in i:
-				for c in i:
-					for d in i:
-						mat.append([a,b,c,d])
-		#plz dont kill us curro
-		#we're so desperate
-		return mat
+			self.epsilon -= self.epsilonDecay
 
 	def updateTargetModel(self):
 		weights = self.model.get_weights()
@@ -123,7 +108,7 @@ class DDQN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
-			name = "luka1_" + str(time.time())
+			name = "breakout_" + str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -132,46 +117,57 @@ class DDQN:
 
 
 def main():
-	env = gym.make('BipedalWalker-v2')
+	env = gym.make('Breakout-ram-v0')
 	stateSize = env.observation_space.shape[0]
-	actionSize = 4
+	actionSize = env.action_space.n
 
 	agent = DDQN(stateSize,actionSize)
 
-	length = 1600 if agent.loadModel else 0
+	scores, episodes = [], []
 
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
 		state = np.reshape(state,[1,stateSize])
 
-		if length < 1600:
-			length+=50
+		score = 0
+		lives = 5
 
-		if ep%25 == 1:
-			agent.daftPunk(0)
-
-		for time in range(length):
+		while not done:
 			if agent.render:
 				env.render()
 
 			action = agent.act(state)
 
-			nextState, reward, done, info = env.step(agent.aMatrix[action])
+			nextState, reward, done, info = env.step(action)
 			nextState = np.reshape(nextState, [1,stateSize])
 			#reward = reward if not done else -10 #penialize for dying
 
 			agent.remember(state,action,reward,nextState,done)
-			state = nextState
-
 			agent.replay()
 
-			if done:
-				agent.updateTargetModel()
-				print("Episode: {}/{}, time: {}, reward: {}, e:{:.2}".format(ep,EPISODES,time,reward,agent.epsilon))
-				break
+			state = nextState
+			score += reward
+			dead = info['ale.lives']<lives
+			lives = info['ale.lives']
+			# if an action make the Pacman dead, then gives penalty of -100
+			reward = reward if not dead else -100
 
 
+		if done:
+			scores.append(score)
+			episodes.append(ep)
+
+			if ep%25 == 1:
+				pylab.plot(episodes, scores, 'b')
+				pylab.xlabel('Episodes')
+				pylab.ylabel('Score')
+				pylab.title('Breakout: Episodes vs Score')
+				pylab.savefig("./breakout.pdf")
+
+				agent.daftPunk(0)
+
+			print("Episode: {}/{}, reward: {}, e:{:.2}".format(ep,EPISODES,reward,agent.epsilon))
 
 
 if __name__ == "__main__":
