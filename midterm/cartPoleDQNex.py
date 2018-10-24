@@ -6,7 +6,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 
-EPISODES = 400
+EPISODES = 40000
 
 class DQNAgent:
 	def __init__(self, state_size, action_size):
@@ -16,7 +16,7 @@ class DQNAgent:
 		self.gamma = 0.95    # discount rate
 		self.epsilon = 1.0  # exploration rate
 		self.epsilon_min = 0.01
-		self.epsilon_decay = 0.995
+		self.epsilon_decay = 0.9999995
 		self.learning_rate = 0.001
 		self.model = self._build_model()
 
@@ -31,6 +31,7 @@ class DQNAgent:
 		return model
 
 	def remember(self, state, action, reward, next_state, done):
+		print(reward)
 		self.memory.append((state, action, reward, next_state, done))
 
 	def act(self, state):
@@ -49,12 +50,11 @@ class DQNAgent:
 				target = (reward + self.gamma *
 						  np.amax(self.model.predict(next_state)[0]))
 			target_f = self.model.predict(state)
-			#print("TARGET IS: ",target)
-			#print("ACtion: ",action)
-			#print("TARGET_F IS: ",target_f)
+		
 			print("targetR",target,"\ntargetA:", target_f)
 			target_f[0][action] = target
 			print("target_fZ:",target_f)
+
 			self.model.fit(state, target_f, epochs=1, verbose=0)
 			print("target_fD:",target_f)
 		if self.epsilon > self.epsilon_min:
@@ -80,8 +80,8 @@ if __name__ == "__main__":
 		state = env.reset()
 		state = np.reshape(state, [1, state_size])
 		for time in range(500):
-			if e % 10 == 0:
-				env.render()
+			#if e % 10 == 9:
+				#env.render()
 			action = agent.act(state)
 			next_state, reward, done, _ = env.step(action)
 			reward = reward if not done else -10
