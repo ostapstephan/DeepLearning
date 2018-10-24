@@ -108,7 +108,7 @@ class DDQN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
-			name = "breakout_" + str(time.time())
+			name = "breakout_gpu" + str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -134,7 +134,7 @@ def main():
 		lives = 5
 
 		while not done:
-			if agent.render:
+			if ep % 20 == 0:
 				env.render()
 
 			action = agent.act(state)
