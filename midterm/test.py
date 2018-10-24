@@ -96,8 +96,10 @@ class DQN:
 			name = "i" +str(time.time())
 		if rw:
 			self.model.load_weights(name)
+			print("load success")
 		else:
 			self.model.save_weights(name)
+
 
 
 
@@ -109,9 +111,9 @@ if __name__ == "__main__":
 	print (env.action_space)
 	actionSize = 4 #env.action_space.n
 	agent = DQN(stateSize,actionSize)
-
+	agent
 	batchSize = 32
-
+	#agent.daftPunk(True,"i1540357040.3333735")
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
@@ -123,7 +125,7 @@ if __name__ == "__main__":
 		for tim in range(1600):
 			#change time to 2000 for hardcore mode 
 			
-			if ep%20 ==19:
+			if ep%20 ==0:
 				env.render()
 			action = agent.act(state)
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
