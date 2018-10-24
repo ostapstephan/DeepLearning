@@ -23,7 +23,7 @@ from keras.optimizers import Adam
 
 EPISODES = 400
 
-class DQN:
+class DDQN:
 	def __init__(self, stateSize,actionSize):
 		self.render = True
 		self.loadModel = False
@@ -37,7 +37,7 @@ class DQN:
 		self.tau = 0.125
 		self.epsilon = 1
 		self.epsilonMin = 0.01 #1 percent random actions
-		self.epsilonDecay = 0.995
+		self.epsilonDecay = 0.9999
 
 
 		self.learningRate = 0.005 #adam LR
@@ -127,7 +127,7 @@ def main():
 	stateSize = env.observation_space.shape[0]
 	actionSize = 4
 
-	agent = DQN(stateSize,actionSize)
+	agent = DDQN(stateSize,actionSize)
 
 	for ep in range(EPISODES):
 		done = False
@@ -147,20 +147,12 @@ def main():
 			agent.remember(state,action,(time+reward),nextState,done)
 			state = nextState
 
-			print("info: ",info)
 			agent.replay()
 			agent.target_train()
 
 			if done:
 				print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,time,agent.epsilon))
 				break
-
-	while not done:
-		#env.render()
-		cnt +=1
-		action = env.action_space.sample()
-		observation,reward,done,info= env.step(action)
-	print( "Lasted ", cnt, "frames")
 
 if __name__ == "__main__":
 	main()
