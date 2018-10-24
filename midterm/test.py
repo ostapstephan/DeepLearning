@@ -27,7 +27,7 @@ class DQN:
 	def __init__(self, stateSize,actionSize):
 		self.stateSize = stateSize
 		self.df = 3 #discretizationfactor
-		self.actionSizeDiscretized = self.df**actionSize #81
+		self.actionSizeDiscretized = self.df**actionSize # 81
 		self.memory = deque(maxlen=2000)
 		self.gamma = .95 
 		self.eps = 1 
@@ -41,8 +41,8 @@ class DQN:
 		model = Sequential()
 		model.add(Dense(32, input_dim=self.stateSize, activation="elu"))
 		model.add(Dense(32, activation="elu"))
-		model.add(Dense(self.actionSizeDiscretized)) #no activation this is a regression 
-		model.compile(loss="mse",optimizer=keras.optimizers.Adam())
+		model.add(Dense(self.actionSizeDiscretized)) 
+		model.compile(loss="mse",optimizer=keras.optimizers.Adam()) # no activation this is a regression 
 		print(model.summary())
 		return model
 
@@ -51,26 +51,29 @@ class DQN:
 
 	def act(self, state):
 		if np.random.uniform() < self.eps:
-			action = env.action_space.sample()
-			action = np.rint(action*1.47)
-			print("action",action)
+			#action = env.action_space.sample()
+			#action = np.rint(action*1.47)
+			#print("action",action)
+			action = round(np.random.uniform(0,80))
 		else:
 			a = self.model.predict(state)
-			action = self.aMatrix[a]
-		return action
+			action = np.argmax(a)
+
+		return int(action)
 
 	def replay(self, batchSize):
 		batch = random.sample(self.memory,batchSize)
 		for state,action,reward,nextState,done in batch:
 			target = reward
 			if not done: #add future discounted reward
+				#print("model",self.model.predict(nextState))
 				target += self.gamma * np.amax(self.model.predict(nextState)[0])
 			target_f = self.model.predict(state)
-			print("TARGET IS: ",target)
-			print("TARGET_F IS: ",target_f)
+			#print("TARGET IS: ",target)
+			#print("TARGET_F IS: ",target_f)
 			
 			#figure out how to get a target from actions?????
-			target_f[action] = target
+			target_f[0][action] = target
 			self.model.fit(state,target_f, epochs = 1, verbose = 0)
 		if self.eps > self.epsMin:
 			self.eps *= self.epsDecay
@@ -85,7 +88,7 @@ class DQN:
 						mat.append([a,b,c,d])
 		#plz dont kill us curro 
 		#we're so desperate
-		print(mat)
+		#print(mat)
 		return mat
 
 
@@ -120,13 +123,14 @@ if __name__ == "__main__":
 			if ep%20 ==0:
 				env.render()
 			action = agent.act(state)
-			nextState, reward, done, info = env.step(action)
+			nextState, reward, done, info = env.step(agent.aMatrix[action])
 			reward = reward if not done else -10
 			nextState = np.reshape(nextState, [1,stateSize])
+
 			agent.remember(state,action,reward,nextState,done)
 
 			if done:
-				print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,time,agent.epsilon))
+				print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,time,agent.eps))
 				break
 			if len(agent.memory)>batchSize: 
 				#create initial set of "training data"
@@ -139,7 +143,7 @@ if __name__ == "__main__":
 		cnt +=1
 		action = env.action_space.sample()
 		observation,reward,done,info= env.step(action)
-	print( "Lasted ", cnt, "frames")		
+			
 
 
 
