@@ -21,7 +21,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 
-EPISODES = 400
+EPISODES = 40000
 
 class DDQN:
 	def __init__(self, stateSize,actionSize):
@@ -32,18 +32,20 @@ class DDQN:
 		self.df = 5 #discretizationfactor
 		self.actionSizeDiscretized = self.df**actionSize
 
-		self.memory = deque(maxlen=2000)
-		self.gamma = .99
+		self.memory = deque(maxlen=900000)
+		self.gamma = .95
+		self.tau = 0.125
 		self.epsilon = 1
 		self.epsilonMin = 0.01 #1 percent random actions
-		self.epsilonDecay = 0.9999
+		self.epsilonDecay = 0.9995
 
 
 		self.learningRate = 0.005 #adam LR
 		self.batchSize = 32
 
 		self.model = self.buildModel()
-		self.target_model = self.buildModel()
+		self.targetModel = self.buildModel()
+		self.updateTargetModel()
 
 		self.aMatrix = self.genAMatrix()
 
@@ -80,12 +82,13 @@ class DDQN:
 		for batch in batches:
 			state, action, reward, nextState, done = batch
 
-			target = self.target_model.predict(state)
+			target = self.targetModel.predict(state)
 			if done:
 				target[0][action] = reward
 			else:
-				qFuture = max(self.target_model.predict(nextState)[0])
-				target[0][action] = reward + qFuture*self.gamma #add discounted award
+				qFuture = np.argmax(self.model.predict(nextState)[0])
+				qTarget = self.targetModel.predict(nextState)[0]
+				target[0][action] = reward + self.gamma*qTarget[qFuture] #add discounted award
 
 			self.model.fit(state,target,epochs=1,verbose=0)
 
@@ -93,7 +96,7 @@ class DDQN:
 			self.epsilon *= self.epsilonDecay
 
 	def genAMatrix(self):
-		i = [-1,-0.5,0,0.5,1]
+		i = [-1,-0.5,0,0.5,1] #[-1 + x*(1-(-1))/(self.actionSizeDiscretized-1) for x in range(self.actionSizeDiscretized)]
 		mat = []
 		for a in i:
 			for b in i:
@@ -104,21 +107,25 @@ class DDQN:
 		#we're so desperate
 		return mat
 
-	def target_train(self):
+	def updateTargetModel(self):
 		weights = self.model.get_weights()
-		target_weights = self.target_model.get_weights()
-		for i in range(len(target_weights)):
-			target_weights[i] = weights[i]
-		self.target_model.set_weights(target_weights)
+		targetWeights = self.targetModel.get_weights()
+		for i in range(len(targetWeights)):
+			targetWeights[i] = weights[i] * self.tau + targetWeights[i] * (1 - self.tau)
 
-	def daftPunk(self, rw, name): #read = true #just for saving and loading model weights
+		self.targetModel.set_weights(targetWeights)
+
+
+	def daftPunk(self, rw, name=None): #read = true #just for saving and loading model weights
 		#Write it, cut it, paste it, save it,
- 		#Load it, check it, quick, rewrite it
-		if(rw):
+		#Load it, check it, quick, rewrite it
+		if name == None:
+			name = "i" +str(time.time())
+		if rw:
 			self.model.load_weights(name)
+			print("load success")
 		else:
 			self.model.save_weights(name)
-
 
 
 def main():
@@ -127,13 +134,19 @@ def main():
 	actionSize = 4
 
 	agent = DDQN(stateSize,actionSize)
-
+	time = 100
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
 		state = np.reshape(state,[1,stateSize])
 
-		for time in range(1600):
+		if time < 1600:
+			time+=50
+
+		if ep%25 == 0:
+			agent.daftPunk(0)
+
+		for time in range(time):
 			if agent.render:
 				env.render()
 
@@ -141,7 +154,7 @@ def main():
 
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
 			nextState = np.reshape(nextState, [1,stateSize])
-			reward = reward if not done else -10 #penialize for dying
+			#reward = reward if not done else -10 #penialize for dying
 
 			agent.remember(state,action,(time+reward),nextState,done)
 			state = nextState
@@ -149,10 +162,12 @@ def main():
 			agent.replay()
 
 			if done:
-				print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,time,agent.epsilon))
+				agent.updateTargetModel()
+				print("Episode: {}/{}, time: {}, reward: {}, e:{:.2}".format(ep,EPISODES,time,reward,agent.epsilon))
 				break
 
-		agent.target_train()
+
+
 
 if __name__ == "__main__":
 	main()
