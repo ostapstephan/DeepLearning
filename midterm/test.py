@@ -38,6 +38,15 @@ class DQN:
 	
 	def buildModel(self):
 		model = Sequential()
+		model.add(Dense(24, input_dim=self.stateSize, activation="relu"))
+		model.add(Dense(48, activation="relu"))
+		model.add(Dense(24, activation="relu"))
+		model.add(Dense(self.actionSizeDiscretized)) #no activation this is a regression
+		model.compile(loss="mse",optimizer=keras.optimizers.Adam())
+		print(model.summary())
+		return model
+		'''
+		model = Sequential()
 		model.add(Dense(64, input_dim=self.stateSize, activation="elu"))
 		model.add(Dropout(.3))
 		model.add(Dense(128, activation="elu"))
@@ -45,7 +54,7 @@ class DQN:
 		model.add(Dense(self.actionSizeDiscretized)) 
 		model.compile(loss="mse",optimizer=keras.optimizers.Adam()) # no activation this is a regression 
 		print(model.summary())
-		return model
+		return model'''
 
 	def remember(self, state, action, reward, nextState, done):
 		self.memory.append((state, action, reward, nextState, done))
@@ -93,7 +102,7 @@ class DQN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it 
 		if name == None:
-			name = "i" +str(time.time())
+			name = "Ostap" +str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -113,7 +122,7 @@ if __name__ == "__main__":
 	agent = DQN(stateSize,actionSize)
 	agent
 	batchSize = 32
-	#agent.daftPunk(True,"i1540357040.3333735")
+	#agent.daftPunk(True,"i1540357040.3333735")#read a model
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
@@ -129,7 +138,7 @@ if __name__ == "__main__":
 				env.render()
 			action = agent.act(state)
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
-			reward = reward if not done else -10
+			#reward = reward if not done else -10
 			nextState = np.reshape(nextState, [1,stateSize])
 
 			agent.remember(state,action,reward,nextState,done)

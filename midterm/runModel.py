@@ -113,20 +113,19 @@ if __name__ == "__main__":
 	agent = DQN(stateSize,actionSize)
 	agent
 	batchSize = 32
-	#agent.daftPunk(True,"i1540357040.3333735")
+	agent.daftPunk(True,"i1540357040.3333735")
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
 		state = np.reshape(state,[1,stateSize])
-		if ep%25 == 1:
-			agent.daftPunk(False)
+		#if ep%25 == 1:
+			#agent.daftPunk(False)
 
 		t1 =  time.time()
 		for tim in range(1600):
 			#change time to 2000 for hardcore mode 
 			
-			if ep%20 ==0:
-				env.render()
+			env.render()
 			action = agent.act(state)
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
 			reward = reward if not done else -10

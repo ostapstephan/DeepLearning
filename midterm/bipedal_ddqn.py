@@ -29,7 +29,7 @@ class DDQN:
 		self.loadModel = False
 
 		self.stateSize = stateSize
-		self.df = 5 #discretizationfactor
+		self.df = 3 #discretizationfactor
 		self.actionSizeDiscretized = self.df**actionSize
 
 		self.memory = deque(maxlen=900000)
@@ -96,7 +96,7 @@ class DDQN:
 			self.epsilon *= self.epsilonDecay
 
 	def genAMatrix(self):
-		i = [-1,-0.5,0,0.5,1] #[-1 + x*(1-(-1))/(self.actionSizeDiscretized-1) for x in range(self.actionSizeDiscretized)]
+		i = [-1,0,1] #[-1 + x*(1-(-1))/(self.actionSizeDiscretized-1) for x in range(self.actionSizeDiscretized)]
 		mat = []
 		for a in i:
 			for b in i:
@@ -120,7 +120,7 @@ class DDQN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
-			name = "i" +str(time.time())
+			name = "Luka" +str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -134,36 +134,37 @@ def main():
 	actionSize = 4
 
 	agent = DDQN(stateSize,actionSize)
-	time = 100
+	Tim = 200
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
 		state = np.reshape(state,[1,stateSize])
 
-		if time < 1600:
-			time+=50
+		if Tim < 1600:
+			Tim+=50
 
 		if ep%25 == 0:
-			agent.daftPunk(0)
+			agent.daftPunk(0)#save
+		t1 = time.time()
 
-		for time in range(time):
-			if agent.render:
+		for tim in range(Tim):
+			if ep %25 ==0: #render
 				env.render()
-
 			action = agent.act(state)
 
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
 			nextState = np.reshape(nextState, [1,stateSize])
 			#reward = reward if not done else -10 #penialize for dying
 
-			agent.remember(state,action,(time+reward),nextState,done)
+			agent.remember(state,action,reward,nextState,done)
 			state = nextState
 
 			agent.replay()
 
 			if done:
 				agent.updateTargetModel()
-				print("Episode: {}/{}, time: {}, reward: {}, e:{:.2}".format(ep,EPISODES,time,reward,agent.epsilon))
+				t2 = time.time()
+				print("Episode: {}/{}, score: {}, e:{:.2},time,{},{}".format(ep,EPISODES,reward,agent.epsilon,tim,t2-t1))
 				break
 
 
