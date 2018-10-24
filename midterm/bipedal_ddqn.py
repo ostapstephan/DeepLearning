@@ -33,8 +33,7 @@ class DDQN:
 		self.actionSizeDiscretized = self.df**actionSize
 
 		self.memory = deque(maxlen=2000)
-		self.gamma = .85
-		self.tau = 0.125
+		self.gamma = .99
 		self.epsilon = 1
 		self.epsilonMin = 0.01 #1 percent random actions
 		self.epsilonDecay = 0.9999
@@ -109,7 +108,7 @@ class DDQN:
 		weights = self.model.get_weights()
 		target_weights = self.target_model.get_weights()
 		for i in range(len(target_weights)):
-			target_weights[i] = weights[i] * self.tau + target_weights[i] * (1 - self.tau)
+			target_weights[i] = weights[i]
 		self.target_model.set_weights(target_weights)
 
 	def daftPunk(self, rw, name): #read = true #just for saving and loading model weights
@@ -148,11 +147,12 @@ def main():
 			state = nextState
 
 			agent.replay()
-			agent.target_train()
 
 			if done:
 				print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,time,agent.epsilon))
 				break
+
+		agent.target_train()
 
 if __name__ == "__main__":
 	main()
