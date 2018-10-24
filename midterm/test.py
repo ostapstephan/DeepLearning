@@ -8,7 +8,6 @@
 
 # these guys helped me through DQN as they had implemented it for Cartpole
 # https://keon.io/deep-q-learning/
-
 import gym 
 import time
 import keras
@@ -18,7 +17,7 @@ import numpy as np
 import pandas as pd
 from collections import deque
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 from keras.optimizers import Adam
 
 EPISODES = 40000
@@ -28,11 +27,11 @@ class DQN:
 		self.stateSize = stateSize
 		self.df = 3 #discretizationfactor
 		self.actionSizeDiscretized = self.df**actionSize # 81
-		self.memory = deque(maxlen=2000)
+		self.memory = deque(maxlen=200000)
 		self.gamma = .95 
 		self.eps = 1 
-		self.epsMin = 0.01 #1 percent random actions
-		self.epsDecay = 0.995 
+		self.epsMin = 0.015 #1 percent random actions
+		self.epsDecay = 0.9999
 		self.learningRate = 0.001 #adam LR
 		self.model = self.buildModel()
 		self.aMatrix = self.genAMatrix()
@@ -40,7 +39,9 @@ class DQN:
 	def buildModel(self):
 		model = Sequential()
 		model.add(Dense(64, input_dim=self.stateSize, activation="elu"))
+		model.add(Dropout(.3))
 		model.add(Dense(128, activation="elu"))
+		model.add(Dropout(.3))
 		model.add(Dense(self.actionSizeDiscretized)) 
 		model.compile(loss="mse",optimizer=keras.optimizers.Adam()) # no activation this is a regression 
 		print(model.summary())
@@ -69,9 +70,6 @@ class DQN:
 				#print("model",self.model.predict(nextState))
 				target += self.gamma * np.amax(self.model.predict(nextState)[0])
 			target_f = self.model.predict(state)
-			#print("TARGET IS: ",target)
-			#print("TARGET_F IS: ",target_f)
-			
 			target_f[0][action] = target
 			self.model.fit(state,target_f, epochs = 1, verbose = 0)
 		if self.eps > self.epsMin:
@@ -91,10 +89,12 @@ class DQN:
 		return mat
 
 
-	def daftPunk(self, rw, name): #read = true #just for saving and loading model weights
+	def daftPunk(self, rw, name=None): #read = true #just for saving and loading model weights
 		#Write it, cut it, paste it, save it,
- 		#Load it, check it, quick, rewrite it 
-		if(rw):
+		#Load it, check it, quick, rewrite it 
+		if name == None:
+			name = "i" +str(time.time())
+		if rw:
 			self.model.load_weights(name)
 		else:
 			self.model.save_weights(name)
@@ -116,33 +116,35 @@ if __name__ == "__main__":
 		done = False
 		state = env.reset()
 		state = np.reshape(state,[1,stateSize])
-		for time in range(1600):
+		if ep%25 == 1:
+			agent.daftPunk(False)
 
+		t1 =  time.time()
+		for tim in range(1600):
 			#change time to 2000 for hardcore mode 
+			
 			if ep%20 ==19:
 				env.render()
 			action = agent.act(state)
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
-			#reward = reward if not done else reward-10
+			reward = reward if not done else -10
 			nextState = np.reshape(nextState, [1,stateSize])
 
 			agent.remember(state,action,reward,nextState,done)
 
 			if done:
-				print("Episode: {}/{}, score: {}, e:{:.2}, time {}".format(ep,EPISODES,reward,agent.eps,time))
+				t2 = time.time()
+				print("Episode: {}/{}, score: {}, e:{:.2}, time {},{}".format(ep,EPISODES,reward,agent.eps,tim,t2-t1))
 				break
 			if len(agent.memory)>batchSize: 
 				#create initial set of "training data"
 				agent.replay(batchSize)
-
 			state = nextState
+
 
 	while not done:
 		#env.render()
 		cnt +=1
 		action = env.action_space.sample()
 		observation,reward,done,info= env.step(action)
-			
-
-
-
+		
