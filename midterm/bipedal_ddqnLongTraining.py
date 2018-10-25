@@ -29,7 +29,11 @@ class DDQN:
 		self.loadModel = False
 
 		self.stateSize = stateSize
+<<<<<<< HEAD
+		self.df = 3 #discretizationfactor
+=======
 		self.df = 7 #discretizationfactor
+>>>>>>> af23b934307dda14622c2674bccfcbfc43b9051f
 		self.actionSizeDiscretized = self.df**actionSize
 
 		self.memory = deque(maxlen=900000)
@@ -99,7 +103,11 @@ class DDQN:
 			self.epsilon *= self.epsilonDecay
 
 	def genAMatrix(self):
+<<<<<<< HEAD
+		i = [-1,0,1] #[-1 + x*(1-(-1))/(self.actionSizeDiscretized-1) for x in range(self.actionSizeDiscretized)]
+=======
 		i = [-1,-0.66,-0.33,0,0.33,0.66,1]#[-1,-0.5,0,0.5,1] #[-1 + x*(1-(-1))/(self.actionSizeDiscretized-1) for x in range(self.actionSizeDiscretized)]
+>>>>>>> af23b934307dda14622c2674bccfcbfc43b9051f
 		mat = []
 		for a in i:
 			for b in i:
@@ -123,7 +131,11 @@ class DDQN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
+<<<<<<< HEAD
+			name = "Luka" +str(time.time())
+=======
 			name = "luka1_" + str(time.time())
+>>>>>>> af23b934307dda14622c2674bccfcbfc43b9051f
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -137,14 +149,29 @@ def main():
 	actionSize = 4
 
 	agent = DDQN(stateSize,actionSize)
+<<<<<<< HEAD
+	Tim = 200
+=======
 
 	length = 1600 if agent.loadModel else 0
 
+>>>>>>> af23b934307dda14622c2674bccfcbfc43b9051f
 	for ep in range(EPISODES):
 		done = False
 		state = env.reset()
 		state = np.reshape(state,[1,stateSize])
 
+<<<<<<< HEAD
+		if Tim < 1600:
+			Tim+=50
+
+		if ep%25 == 0:
+			agent.daftPunk(0)#save
+		t1 = time.time()
+
+		for tim in range(Tim):
+			if ep %25 ==0: #render
+=======
 		if length < 1600:
 			length+=50
 
@@ -153,8 +180,8 @@ def main():
 
 		for time in range(length):
 			if agent.render:
+>>>>>>> af23b934307dda14622c2674bccfcbfc43b9051f
 				env.render()
-
 			action = agent.act(state)
 
 			nextState, reward, done, info = env.step(agent.aMatrix[action])
@@ -168,7 +195,8 @@ def main():
 
 			if done:
 				agent.updateTargetModel()
-				print("Episode: {}/{}, time: {}, reward: {}, e:{:.2}".format(ep,EPISODES,time,reward,agent.epsilon))
+				t2 = time.time()
+				print("Episode: {}/{}, score: {}, e:{:.2},time,{},{}".format(ep,EPISODES,reward,agent.epsilon,tim,t2-t1))
 				break
 
 

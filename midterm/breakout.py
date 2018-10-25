@@ -1,20 +1,36 @@
 #!/bin/python3.6.7
-# Ostap Voynarovskiy
+# Ostap Voynarovskiy and Luka Lipovac
 # CGML Midterm
 # October 21 2018
 # Professor Curro
-# ok so when installing the environment we had to make sure
-# that the install of gym was in the pyenv install just as an fyi to myself
 
-# these guys helped me through DQN as they had implemented it for Cartpole
+# Paper we were implementing 
+# We looked at Rainbow and wanted to implement some of the 
+# Algorithims in it
+# We ended up choosing DQN, DDQN, D3QN 
+# https://arxiv.org/pdf/1710.02298.pdf
+# The DQN specifics were taken from the paper that introduced it
+# https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf
+
+# Paper:
+# We chose to implement parts of the Rainbow paper for this midterm
+# 
+
+
+# these guys helped us through DQN
 # https://keon.io/deep-q-learning/
+# https://becominghuman.ai/lets-build-an-atari-ai-part-1-dqn-df57e8ff3b26
 
 import gym
 import time
 import keras
 import random
+<<<<<<< HEAD
 import pylab
 import numpy
+=======
+import matplotlib.pyplot as plt
+>>>>>>> ba1b4718ab041e043e3cba7ab725eacb3513f3c5
 from gym import wrappers
 import numpy as np
 import pandas as pd
@@ -119,7 +135,7 @@ class D3QN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
-			name = "breakout_" + str(time.time())
+			name = "breakout_gpu2" + str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -145,9 +161,14 @@ def main():
 		lives = 5
 
 		while not done:
+<<<<<<< HEAD
 			if ep%10 == 1:
 				if agent.render:
 					env.render()
+=======
+			if ep % 20 == 0:
+				env.render()
+>>>>>>> ba1b4718ab041e043e3cba7ab725eacb3513f3c5
 
 			action = agent.act(state)
 
@@ -160,13 +181,18 @@ def main():
 
 			state = nextState
 			score += reward
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> ba1b4718ab041e043e3cba7ab725eacb3513f3c5
 
 		if done:
 			scores.append(score)
 			episodes.append(ep)
 			epsilon.append(agent.epsilon)
 
+<<<<<<< HEAD
 			if ep%25 == 1:
 				pylab.plot(episodes, scores, 'b')
 				pylab.xlabel('Episodes')
@@ -181,6 +207,20 @@ def main():
 
 			print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,score,agent.epsilon))
 
+=======
+			if ep%25 == 5:
+				plt.plot(episodes,scores)
+				plt.xlabel('Episodes')
+				plt.ylabel('Score')
+				plt.title('Breakout: Episodes vs Score')
+				plt.savefig("./breakout2.pdf")
+				
+				dataBreakout = pd.DataFrame(episodes,scores)
+				dataBreakout.to_csv("./breakout2out.csv")
+				agent.daftPunk(0)
+
+			print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,score,agent.epsilon))
+>>>>>>> ba1b4718ab041e043e3cba7ab725eacb3513f3c5
 		agent.updateTargetModel()
 
 if __name__ == "__main__":
