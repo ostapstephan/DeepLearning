@@ -127,10 +127,10 @@ class D3QN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if rw:
-			self.model.load_weights(args.filename)
+			#self.model.load_weights(filename)
 			print("load success")
 		else:
-			self.model.save_weights(args.filename)
+			self.model.save_weights("./models/"+args.fileName+"_"+str(time.time())+"-Breakout.csv")
 
 
 def main():
@@ -176,10 +176,10 @@ def main():
 				pylab.xlabel('Episodes')
 				pylab.ylabel('Score')
 				pylab.title('Breakout: Episodes vs Score')
-				pylab.savefig("./breakout.pdf")
+				pylab.savefig("./"+args.fileName+"-Breakout.pdf")
 
 				dataBreakout = pd.DataFrame({'Episode':episodes, 'Score':scores, 'Epsilon':epsilon})
-				dataBreakout.to_csv("./breakout.csv")
+				dataBreakout.to_csv("./"+args.fileName+"-Breakout.csv")
 
 				agent.daftPunk(0)
 
@@ -188,7 +188,7 @@ def main():
 
 
 parser = ArgumentParser()
-parser.add_argument("-o", "--output", dest="filename", default="Breakout")
+parser.add_argument("-o", "--output", dest="fileName", default="test")
 parser.add_argument("-r", "--render", dest="renderAmount", type=int, default=1)
 
 args = parser.parse_args()
