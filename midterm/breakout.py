@@ -1,19 +1,31 @@
 #!/bin/python3.6.7
-# Ostap Voynarovskiy
+# Ostap Voynarovskiy and Luka Lipovac
 # CGML Midterm
 # October 21 2018
 # Professor Curro
-# ok so when installing the environment we had to make sure
-# that the install of gym was in the pyenv install just as an fyi to myself
 
-# these guys helped me through DQN as they had implemented it for Cartpole
+# Paper we were implementing 
+# We looked at Rainbow and wanted to implement some of the 
+# Algorithims in it
+# We ended up choosing DQN, DDQN, D3QN 
+# https://arxiv.org/pdf/1710.02298.pdf
+# The DQN specifics were taken from the paper that introduced it
+# https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf
+
+# Paper:
+# We chose to implement parts of the Rainbow paper for this midterm
+# 
+
+
+# these guys helped us through DQN
 # https://keon.io/deep-q-learning/
+# https://becominghuman.ai/lets-build-an-atari-ai-part-1-dqn-df57e8ff3b26
 
 import gym
 import time
 import keras
 import random
-import pylab
+import matplotlib.pyplot as plt
 from gym import wrappers
 import numpy as np
 import pandas as pd
@@ -24,7 +36,7 @@ from keras.optimizers import Adam
 
 EPISODES = 4000000
 
-class DDQN:
+class D3QN:
 	def __init__(self, stateSize,actionSize):
 		self.render = True
 		self.loadModel = False
@@ -108,7 +120,7 @@ class DDQN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
-			name = "breakout_gpu" + str(time.time())
+			name = "breakout_gpu2" + str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -121,7 +133,7 @@ def main():
 	stateSize = env.observation_space.shape[0]
 	actionSize = env.action_space.n
 
-	agent = DDQN(stateSize,actionSize)
+	agent = D3QN(stateSize,actionSize)
 
 	scores, episodes = [], []
 
@@ -148,27 +160,25 @@ def main():
 
 			state = nextState
 			score += reward
-			dead = info['ale.lives']<lives
-			lives = info['ale.lives']
-			# if an action make the Pacman dead, then gives penalty of -100
-			reward = reward if not dead else -100
-
+			
 
 		if done:
 			scores.append(score)
 			episodes.append(ep)
 
-			if ep%25 == 1:
-				pylab.plot(episodes, scores, 'b')
-				pylab.xlabel('Episodes')
-				pylab.ylabel('Score')
-				pylab.title('Breakout: Episodes vs Score')
-				pylab.savefig("./breakout.pdf")
-
+			if ep%25 == 5:
+				plt.plot(episodes,scores)
+				plt.xlabel('Episodes')
+				plt.ylabel('Score')
+				plt.title('Breakout: Episodes vs Score')
+				plt.savefig("./breakout2.pdf")
+				
+				dataBreakout = pd.DataFrame(episodes,scores)
+				dataBreakout.to_csv("./breakout2out.csv")
 				agent.daftPunk(0)
 
-			print("Episode: {}/{}, reward: {}, e:{:.2}".format(ep,EPISODES,reward,agent.epsilon))
-
+			print("Episode: {}/{}, score: {}, e:{:.2}".format(ep,EPISODES,score,agent.epsilon))
+		agent.updateTargetModel()
 
 if __name__ == "__main__":
 	main()
