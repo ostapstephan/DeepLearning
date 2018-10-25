@@ -38,14 +38,13 @@ class D3QN:
 		self.tau = 0.125
 		self.epsilon = 1.0
 		self.epsilonMin = 0.01 #1 percent random actions
-		annealedFrames = 250000
-		self.epsilonDecay = (self.epsilon-self.epsilonMin)/annealedFrames
+		self.epsilonDecay = 0.999
 
-		self.learningRate = 0.0000625
+		self.learningRate = 0.0001
 		self.adamEpsilon = 0.00015
 
-		self.trainingStart = 200000
-		self.batchSize = 64
+		self.trainingStart = 2000
+		self.batchSize = 32
 
 		self.model = self.buildModel()
 		self.targetModel = self.buildModel()
@@ -56,22 +55,13 @@ class D3QN:
 
 		self.updateTargetModel()
 
-	def huber_loss(a, b, in_keras=True):
-	    error = a - b
-	    quadratic_term = error*error / 2
-	    linear_term = abs(error) - 1/2
-	    use_linear_term = (abs(error) > 1.0)
-	    if in_keras:
-	        use_linear_term = K.cast(use_linear_term, 'float32')
-	    return use_linear_term * linear_term + (1-use_linear_term) * quadratic_term
-
 	def buildModel(self):
 		model = Sequential()
 		model.add(Dense(128, input_dim=self.stateSize, activation="relu"))
 		model.add(Dense(32, activation="relu"))
 		model.add(Dense(self.actionSize, activation="linear")) #no activation this is a regression
-		model.compile(loss=huber_loss,optimizer=keras.optimizers.Adam(lr=self.learningRate, epsilon=self.adamEpsilon))
-
+		model.compile(loss="mse",optimizer=keras.optimizers.Adam(lr=self.learningRate, epsilon=self.adamEpsilon))
+		#print(model.summary())
 		return model
 
 	def remember(self, state, action, reward, nextState, done):
@@ -104,7 +94,7 @@ class D3QN:
 			self.model.fit(state,target,epochs=1,verbose=0)
 
 		if self.epsilon > self.epsilonMin:
-			self.epsilon -= self.epsilonDecay
+			self.epsilon *= self.epsilonDecay
 
 	def updateTargetModel(self):
 		weights = self.model.get_weights()
@@ -119,7 +109,7 @@ class D3QN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if name == None:
-			name = "breakout_" + str(time.time())
+			name = "Cartpole_" + str(time.time())
 		if rw:
 			self.model.load_weights(name)
 			print("load success")
@@ -128,7 +118,7 @@ class D3QN:
 
 
 def main():
-	env = gym.make('Breakout-ram-v0')
+	env = gym.make('CartPole-v0')
 	stateSize = env.observation_space.shape[0]
 	actionSize = env.action_space.n
 
@@ -145,9 +135,8 @@ def main():
 		lives = 5
 
 		while not done:
-			if ep%10 == 1:
-				if agent.render:
-					env.render()
+			if agent.render:
+				env.render()
 
 			action = agent.act(state)
 
@@ -171,11 +160,11 @@ def main():
 				pylab.plot(episodes, scores, 'b')
 				pylab.xlabel('Episodes')
 				pylab.ylabel('Score')
-				pylab.title('Breakout: Episodes vs Score')
-				pylab.savefig("./breakout.pdf")
+				pylab.title('Cartpole: Episodes vs Score')
+				pylab.savefig("./Cartpole.pdf")
 
-				dataBreakout = pd.DataFrame(episodes,scores)
-				dataBreakout.to_csv("./breakout2out.csv")
+				data = numpy.asarray([ [1,2,3], [4,5,6], [7,8,9] ])
+				numpy.savetxt("Cartpole.csv", data, delimiter=",")
 
 				agent.daftPunk(0)
 
