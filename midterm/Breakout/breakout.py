@@ -4,18 +4,43 @@
 # October 21 2018
 # Professor Curro
 
-# Paper we were implementing
-# We looked at Rainbow and wanted to implement some of the
+# Paper we were implementing 
+# We looked at Rainbow and wanted to implement some of the 
 # Algorithims in it
-# We ended up choosing DQN, DDQN, D3QN
+# We ended up choosing DQN, DDQN, D3QN 
 # https://arxiv.org/pdf/1710.02298.pdf
 # The DQN specifics were taken from the paper that introduced it
 # https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf
+# The hacky paper we implemented to get the dqn to work for continuous output spaces
+# http://users.cecs.anu.edu.au/~rsl/rsl_papers/99ai.kambara.pdf?fbclid=IwAR1hAirs1uX9Ya21PAR6kVRcT7_ivK5YtTm4w5KPasH2iRPtffMdSpF8Wh0
 
-# Paper:
+# Documentation:
 # We chose to implement parts of the Rainbow paper for this midterm
-#
-
+# The benchmark for many reinforcement learning aproaches is the 
+# open ai gym. Since Ben Ma was going to be doing the inverted penulum,
+# we decided to pick a different problem. We chose QWOP initially 
+# thinking that it would provide us with a limited number of state 
+# variables and actions. We hoped this would reduce training time as
+# compared to something like PAC-MAN. What we failed to realize however
+# is that The QWOP we know and the bipedal walker api provided by 
+# open ai gym were not the same. While the Real game provides 4 discrete
+# inputs which are boolean, the open ai gym provides 4 floats from -1 to 1
+# corresponding to the torque delivered by each of the 4 joints. 
+# Initially we didn't think much of this but quickly we realized that
+# the premise of deep Q learning requires a discrete action space.
+# Being that we had spent a lot of time setting up the environment,
+# we decided to try a hack that we read about in the third paper 
+# mentioned above, where we could discretize the outputs. We had high  
+# hopes for this since it would essentially be doing what qwop does, 
+# however after 15 hours training on a gtx 980 with an i7 4790k cpu, 
+# it managed to sometimes split its legs and not fall over. Reailizing 
+# we weren't making progress, we switched environments to Breakout-ram-v0
+# where we implemented the DQN, dueling DQN and double DQN with Huber loss.
+# Our final model was a combination of the models we had implemented. To see if 
+# it would converge, we let it also train on Cartpole, we achieved 
+# convergence in less than 20 minutes, so we are hoping to see good 
+# results from breakout. According to the internet, similar models have
+# taken aproximately 35 hours to train, so we will just have to wait. 
 
 # these guys helped us through DQN
 # https://keon.io/deep-q-learning/
