@@ -127,10 +127,10 @@ class D3QN:
 		#Write it, cut it, paste it, save it,
 		#Load it, check it, quick, rewrite it
 		if rw:
-			self.model.load_weights(filename)
+			self.model.load_weights(args.filename)
 			print("load success")
 		else:
-			self.model.save_weights(filename)
+			self.model.save_weights(args.filename)
 
 
 def main():
@@ -151,9 +151,8 @@ def main():
 		lives = 5
 
 		while not done:
-			if ep%10 == 0:
-				if agent.render:
-					env.render()
+			if ep%args.renderAmount == 0:
+				env.render()
 
 			action = agent.act(state)
 
@@ -172,7 +171,7 @@ def main():
 			episodes.append(ep)
 			epsilon.append(agent.epsilon)
 
-			if ep%renderAmount == 0:
+			if ep%25 == 0:
 				pylab.plot(episodes, scores, 'b')
 				pylab.xlabel('Episodes')
 				pylab.ylabel('Score')
@@ -190,7 +189,7 @@ def main():
 
 parser = ArgumentParser()
 parser.add_argument("-o", "--output", dest="filename", default="Breakout")
-parser.add_argument("-r", "--render", dest="renderAmount", default=1)
+parser.add_argument("-r", "--render", dest="renderAmount", type=int, default=1)
 
 args = parser.parse_args()
 
