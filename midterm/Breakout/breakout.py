@@ -38,7 +38,7 @@
 # where we implemented the DQN, dueling DQN and double DQN with Huber loss.
 # Our final model was a combination of the models we had implemented. To see if 
 # it would converge, we let it also train on Cartpole, we achieved 
-# convergence in less than 20 minutes, so we are hoping to see good 
+# convergence in less than 10 minutes, so we are hoping to see good 
 # results from breakout. According to the internet, similar models have
 # taken aproximately 35 hours to train, so we will just have to wait. 
 
@@ -89,9 +89,8 @@ class D3QN:
 		self.epsilonDecay = (self.epsilon-self.epsilonMin)/annealedFrames
 		self.learningRate = 0.0000625
 		self.adamEpsilon = 0.00015
-
 		self.trainingStart = 200000
-		self.batchSize = 64
+		self.batchSize = 4096 # 64
 
 		self.model = self.buildModel()
 		self.targetModel = self.buildModel()
