@@ -1,16 +1,3 @@
-CUDA_VISIBLE_DEVICES=0 python breakout.py -r 25 -o Ostap
-Using TensorFlow backend.
-2018-10-24 22:30:11.788911: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2018-10-24 22:30:11.859568: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2018-10-24 22:30:11.860009: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 0 with properties: 
-name: GeForce GTX 980 major: 5 minor: 2 memoryClockRate(GHz): 1.2785
-pciBusID: 0000:01:00.0
-totalMemory: 3.94GiB freeMemory: 3.26GiB
-2018-10-24 22:30:11.860043: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1490] Adding visible gpu devices: 0
-2018-10-24 22:30:12.091320: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] Device interconnect StreamExecutor with strength 1 edge matrix:
-2018-10-24 22:30:12.091363: I tensorflow/core/common_runtime/gpu/gpu_device.cc:977]      0 
-2018-10-24 22:30:12.091372: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 0:   N 
-2018-10-24 22:30:12.091512: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2978 MB memory) -> physical GPU (device: 0, name: GeForce GTX 980, pci bus id: 0000:01:00.0, compute capability: 5.2)
 Episode: 0/4000000, score: 3.0, epsilon:1.0
 Episode: 1/4000000, score: 1.0, epsilon:1.0
 Episode: 2/4000000, score: 0.0, epsilon:1.0
@@ -5467,21 +5454,4 @@ Episode: 5452/4000000, score: 0.0, epsilon:0.01
 Episode: 5453/4000000, score: 1.0, epsilon:0.01
 Episode: 5454/4000000, score: 4.0, epsilon:0.01
 Episode: 5455/4000000, score: 2.0, epsilon:0.01
-^CTraceback (most recent call last):
-  File "breakout.py", line 222, in <module>
-    main()
-  File "breakout.py", line 189, in main
-    agent.replay()
-  File "breakout.py", line 137, in replay
-    self.model.fit(state,target,epochs=1,verbose=0)
-  File "/home/ostap/.pyenv/versions/dlMidterm/lib/python3.6/site-packages/keras/engine/training.py", line 1039, in fit
-    validation_steps=validation_steps)
-  File "/home/ostap/.pyenv/versions/dlMidterm/lib/python3.6/site-packages/keras/engine/training_arrays.py", line 199, in fit_loop
-    outs = f(ins_batch)
-  File "/home/ostap/.pyenv/versions/dlMidterm/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py", line 2715, in __call__
-    return self._call(inputs)
-  File "/home/ostap/.pyenv/versions/dlMidterm/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py", line 2675, in _call
-    fetched = self._callable_fn(*array_vals)
-  File "/home/ostap/.pyenv/versions/dlMidterm/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1399, in __call__
-    run_metadata_ptr)
-KeyboardInterrupt
+
