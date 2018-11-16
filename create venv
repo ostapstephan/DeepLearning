@@ -1,0 +1,43 @@
+#create venv
+virtualenv --system-site-packages -p python3 venv 
+
+#ACTIVATE THE VENV!!!!!
+source venv/bin/activate 
+
+#Check version
+pip -V
+
+#Update pip if needed
+pip3 install --upgrade pip
+
+#Install Tensorflow
+pip install --upgrade tensorflow-gpu
+
+#Install tqdm
+pip install tqdm 
+
+Install Pandas
+pip install pandas
+
+Update MatplotLib
+pip install --upgrade matplotlib
+
+#install sklearn
+pip install -U scikit-learn
+
+#install gym
+pip install gym
+
+#install keras
+pip install keras
+
+#setuptools: 24.2.0 or higher
+#NumPy: 1.9.0 or higher
+#python-dateutil: 2.5.0 or higher
+#pytz
+
+#Pyenv resources 
+https://amaral.northwestern.edu/resources/guides/pyenv-tutorial
+
+#other Package manager advice
+https://towardsdatascience.com/which-python-package-manager-should-you-use-d0fd0789a250

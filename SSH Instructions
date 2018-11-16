@@ -1,0 +1,48 @@
+#SSH Commands
+#Taken from:
+#https://www.simplified.guide/ubuntu/install-ssh-server
+
+#do this first cuz duh
+sudo apt update
+
+#install ssh server
+sudo apt install -y openssh-server
+
+#check status
+sudo systemctl status ssh
+
+#start the ssh 
+sudo systemctl start ssh
+
+#disable and disconnect 
+sudo systemctl disable ssh
+
+# re-enable  the ssh connection
+sudo systemctl enable ssh
+
+#check what ports are availible
+sudo netstat -npt
+
+#kill the ssh process
+sudo kill (PID OF PROGRAM) -9
+
+#to ssh type
+#ssh USER@IP -p PORT 
+#then the password
+
+#restart the system
+sudo systemctl restart ssh
+
+RUN MODEL ON 1 GPU
+CUDA_VISIBLE_DEVICES=1 python MY_PROGRAM.py 
+
+
+Login with specific port
+https://askubuntu.com/questions/264046/how-to-ssh-on-a-port-other-than-22
+
+
+#configuring ssh stuff
+https://help.ubuntu.com/community/SSH/OpenSSH/Configuring
+
+#more config stuff
+https://www.godaddy.com/help/changing-the-ssh-port-for-your-linux-server-7306
