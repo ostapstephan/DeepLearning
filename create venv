@@ -16,6 +16,7 @@ pip install --upgrade tensorflow-gpu
 #Install tqdm
 pip install tqdm 
 
+
 Install Pandas
 pip install pandas
 
